@@ -1,0 +1,8 @@
+.classpath
+.checkstyle
+.project
+.settings
+nbactions.xml
+target
+temp-testng-customsuite.xml
+test-output
