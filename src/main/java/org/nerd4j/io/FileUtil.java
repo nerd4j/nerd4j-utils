@@ -35,12 +35,14 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Nerd4j Team
  */
-public abstract class FileUtil
+public final class FileUtil
 {
 
 	/** Logging system. */
 	private static final Logger log = LoggerFactory.getLogger( FileUtil.class );
 	
+	/** Private constructor, no new instances */
+	private FileUtil() { super(); }
 	
 	/**
 	 * Creates the file and all the containing directories in the given path.
@@ -113,19 +115,29 @@ public abstract class FileUtil
 		
 		try{
 			
+			
+			/*
+			 * We create the absolute path related to the given path (that can
+			 * be a relative path)
+			 */
+			final File absolutePath = path.getAbsoluteFile();
+			
 			/* 
 			 * If the file or the directory identified by the
 			 * given path already exists no other work needs
 			 * to be done.
 			 */
-			if( path.exists() ) return path;
-			
-			/*
-			 * Otherwise we create the absolute path related
-			 * to the given path (that can be a relative path).
-			 */
-			final File absolutePath = path.getAbsoluteFile();
-			
+			if( path.exists() )
+			{
+				
+				/* Check right type */
+				if ( (isDirectory && !path.isDirectory()) ||  (!isDirectory && !path.isFile()) )
+					throw new IOException( "Unable to create the path " + absolutePath + 
+							               ", it already exists but has the wrong leaf type." );
+				
+				return path;
+				
+			}
 			
 			if( log.isInfoEnabled() )
 			{

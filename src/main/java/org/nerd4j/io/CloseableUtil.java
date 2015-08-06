@@ -27,18 +27,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Utility methods to handle {@link Closeable} instances.
+ * Utility methods to handle {@link Closeable} and {@link AutoCloseable} instances.
  * 
  * @author Nerd4j Team
  */
-public abstract class CloseableUtil
+public final class CloseableUtil
 {
 
 	/** Static class logger. */
 	private static final Logger logger = LoggerFactory.getLogger( CloseableUtil.class );
 	
+	/** Private constructor, no new instances */
+	private CloseableUtil() { super(); }
+	
 	/**
-	 * Close a {@link Closeable} instance soaking every exception tha may appear.
+	 * Close a {@link AutoCloseable} instance soaking every exception tha may appear.
 	 * <p>
 	 * If an exception is throw while closing it will be logged at <tt>warn</tt> level.
 	 * </p>
@@ -46,7 +49,7 @@ public abstract class CloseableUtil
 	 * @param closeable instance to close.
 	 * @return {@code true} if give instance has been closed without errors.
 	 */
-	public static boolean closeAndSoak( Closeable closeable )
+	public static boolean closeAndSoak( AutoCloseable closeable )
 	{
 		
 		return closeAndSoak( closeable, "Soaked an exception while closing {}.", closeable );
@@ -54,7 +57,7 @@ public abstract class CloseableUtil
 	}
 	
 	/**
-	 * Close a {@link Closeable} instance soaking every exception tha may appear.
+	 * Close a {@link AutoCloseable} instance soaking every exception tha may appear.
 	 * <p>
 	 * If an exception is throw while closing it will be logged at <tt>warn</tt> level.
 	 * </p>
@@ -63,7 +66,7 @@ public abstract class CloseableUtil
 	 * @param errorMessage error message
 	 * @return {@code true} if give instance has been closed without errors.
 	 */
-	public static boolean closeAndSoak( Closeable closeable, String errorMessage )
+	public static boolean closeAndSoak( AutoCloseable closeable, String errorMessage )
 	{
 		
 		return closeAndSoak( closeable, errorMessage, (Object[]) null );
@@ -71,7 +74,7 @@ public abstract class CloseableUtil
 	}
 	
 	/**
-	 * Close a {@link Closeable} instance soaking every exception tha may appear.
+	 * Close a {@link AutoCloseable} instance soaking every exception tha may appear.
 	 * <p>
 	 * If an exception is throw while closing it will be logged at <tt>warn</tt> level.
 	 * </p>
@@ -81,7 +84,7 @@ public abstract class CloseableUtil
 	 * @param errorData    data for error message
 	 * @return {@code true} if give instance has been closed without errors.
 	 */
-	public static boolean closeAndSoak( Closeable closeable, String errorMessage, Object... errorData )
+	public static boolean closeAndSoak( AutoCloseable closeable, String errorMessage, Object... errorData )
 	{
 		
 		/* Try instance close */
