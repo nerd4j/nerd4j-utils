@@ -259,7 +259,7 @@ public final class FileUtil
 				 * as long as the whole data was successfully copied.
 				 */
 				if ( source != null )
-					CloseableUtil.closeAndSoak( source, "Cannot properly close source file {} channel.", src.getName() );
+					CloseableUtil.closeAndSoak( (AutoCloseable) source, "Cannot properly close source file {} channel.", src.getName() );
 				
 				if ( destination != null )
 					destination.close();

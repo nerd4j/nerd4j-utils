@@ -475,7 +475,7 @@ public class PrimeSieve
 	{
 		
 		/* This is the superior limit of the data to be sifted. */ 
-		final int endIndex = data.length << BLOCK_SIZE_SHIFT;
+		final int endIndex = Math.min( data.length << BLOCK_SIZE_SHIFT, Integer.MAX_VALUE >> 1 );
 		
 		/* The index of the first bit of the start block. */
 		final int startBlockIndex = startBlock << BLOCK_SIZE_SHIFT;
