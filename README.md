@@ -1,5 +1,5 @@
 # nerd4j-utils
-This library contains utility classes common to all nerd4j projects but also generic enough to be used in any code.
+This library contains utility classescommon to all nerd4j projects but also generic enough to be used in any code.
 
 ## Content of this library
 The classes of this library are divided into several concepts:
