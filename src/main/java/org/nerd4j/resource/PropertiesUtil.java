@@ -142,11 +142,7 @@ public final class PropertiesUtil
 		{
 			
 			if ( fis != null )
-<<<<<<< HEAD
 				CloseableUtil.closeAndSoak( (AutoCloseable) fis, "Cannot properly close file {}", path );
-=======
-				CloseableUtil.closeAndSoak( fis, "Cannot properly close file {}", path );
->>>>>>> 0ad3c2f22cd7171279fa1eb7b396833e3a098c3f
 			
 		}
 		
