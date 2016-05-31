@@ -31,7 +31,7 @@
     <dependency>
       <groupId>org.nerd4j</groupId>
       <artifactId>nerd4j-core</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
 

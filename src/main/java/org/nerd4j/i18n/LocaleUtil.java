@@ -68,21 +68,21 @@ public class LocaleUtil
 		
 		Locale locale = cache.get( name );
 		
-		if ( locale == null )
+		if( locale == null )
 		{
 			
 			final String[] splits = LOCALE_SPLIT.split( name, 3 );
 			
-			switch ( splits.length )
+			switch( splits.length )
 			{
 				case 1:
-					locale = new Locale(splits[0]);
+					locale = new Locale( splits[0] );
 					break;
 				case 2:
-					locale = new Locale(splits[0], splits[1]);
+					locale = new Locale( splits[0], splits[1] );
 					break;
 				case 3:
-					locale = new Locale(splits[0], splits[1], splits[2]);
+					locale = new Locale( splits[0], splits[1], splits[2] );
 					break;
 			}
 			
