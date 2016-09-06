@@ -58,7 +58,8 @@ public class FreemarkerUtil
 
 	/**
 	 * Creates the configuration needed by {@code Freemarker}
-	 * to load and handle the templates.
+	 * to load and handle the templates from a directory in 
+	 * the file system.
 	 * 
 	 * @param templatePath path where to find the templates.
 	 * @param wrapper      wrapper type to use to handle data.
@@ -97,6 +98,50 @@ public class FreemarkerUtil
 		}
 
 	}
+	
+	/**
+	 * Creates the configuration needed by {@code Freemarker}
+	 * to load and handle the templates from a directory in
+	 * the classpath.
+	 * 
+	 * @param rootClasspath class to use for the {@code Class#getResource(String)}.
+	 * @param templatePath path where to find the templates relative to che given class.
+	 * @param wrapper      wrapper type to use to handle data.
+	 * @return the required configuration.
+	 * @throws MessagingException if the path is not reachable.
+	 */
+	public static Configuration createConfiguration( Class<?> rootClasspath, String templatePath, Wrapper wrapper )
+			throws MessagingException
+			{
+		
+		try{
+			
+			final Configuration configuration = new Configuration();
+			
+			switch( wrapper )
+			{
+			
+			case BEANS: configuration.setObjectWrapper( ObjectWrapper.BEANS_WRAPPER );
+			break;
+			
+			case SIMPLE: configuration.setObjectWrapper( ObjectWrapper.SIMPLE_WRAPPER );
+			break;
+			
+			default: configuration.setObjectWrapper( ObjectWrapper.DEFAULT_WRAPPER );
+			
+			}
+			
+			configuration.setClassForTemplateLoading( rootClasspath, templatePath );
+			return configuration;
+			
+		}catch( Exception ex )
+		{
+			
+			throw new MessagingException( "Error in creating Freemarker configuration", ex );
+			
+		}
+		
+			}
 	
 	/**
 	 * Performs the render of the given template using the given data model.

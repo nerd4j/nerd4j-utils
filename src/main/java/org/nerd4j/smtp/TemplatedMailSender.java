@@ -41,8 +41,15 @@ import freemarker.template.Configuration;
 public class TemplatedMailSender extends SimpleMailSender
 {
 
-	/** Path to the directory that contains the email templates. */
+	/** Path to the directory that contains the email templates in the file system. */
 	private File templatePath;
+	
+	/**
+	 * Path to the directory that contains the email templates in the classpath.
+	 * The provided classpath must be absolute, the first character is expected
+	 * to be a '/'. 
+	 */
+	private String templateClasspath;
 	
 	/** Wrapper used to handle the data model. */
 	private FreemarkerUtil.Wrapper wrapper;
@@ -60,9 +67,10 @@ public class TemplatedMailSender extends SimpleMailSender
         
         super();
         
-        this.wrapper       = null;
-        this.templatePath  = null;
-        this.configuration = null;
+        this.wrapper           = null;
+        this.templatePath      = null;
+        this.configuration     = null;
+        this.templateClasspath = null;
         
     }
     
@@ -82,7 +90,14 @@ public class TemplatedMailSender extends SimpleMailSender
 		try{
 		
 			super.init();
-			configuration = FreemarkerUtil.createConfiguration( templatePath, wrapper );
+			if( templateClasspath != null )
+				configuration = FreemarkerUtil.createConfiguration( getClass(), templateClasspath, wrapper );
+			
+			else if( templatePath != null )
+				configuration = FreemarkerUtil.createConfiguration( templatePath, wrapper );
+			
+			else
+				throw new NullPointerException( "At least one among templatePath or templateClasspath must be defined" );
 			
 		}catch( MessagingException ex )
 		{
@@ -197,12 +212,24 @@ public class TemplatedMailSender extends SimpleMailSender
     
     public void setTemplatePath( String templatePath )
     {
-        this.templatePath = new File( templatePath );
+    	this.templatePath = new File( templatePath );
+    	this.templateClasspath = null;
     }
 
     public void setTemplatePath( File templatePath )
     {
         this.templatePath = templatePath;
+        this.templateClasspath = null;
+    }
+    
+    public void setTemplateClasspath( String templateClasspath )
+    {
+    	if( templateClasspath != null && ! templateClasspath.startsWith("/") )
+    		this.templateClasspath = "/" + templateClasspath;
+    	else
+    		this.templateClasspath = templateClasspath;
+    	
+    	this.templatePath = null;
     }
 
     public void setWrapper( FreemarkerUtil.Wrapper wrapper )
