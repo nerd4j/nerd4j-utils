@@ -25,9 +25,8 @@ package org.nerd4j.resource;
  * Common abstract implementation of the <code>ResourcePathResolver</code> interface.
  * 
  * <p>
- *  This class represents the base implementation common to all
- *  the resource path resolvers.
- * </p>
+ * This class represents the base implementation common to all
+ * the resource path resolvers.
  * 
  * @param <K> identification key type. 
  * 

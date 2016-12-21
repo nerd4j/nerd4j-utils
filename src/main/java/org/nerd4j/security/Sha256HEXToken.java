@@ -30,32 +30,31 @@ import java.util.Date;
  * Static class for the generation of identification
  * tokens based on HASH code.
  * <p>
- *  The generated token has the following form:
- *  <blockquote>
- *   base64( public-data-separated-by ":" + expiration-timestamp + ":" +
- *   sha256( public-data-separated-by ":" + expiration-timestamp + ":" +
- *   private-data-separated-by ":" + {@link Sha256HEXToken#PRIVATE_KEY}) )
- *   <dl>
- *    <dt>public-data:<dt><dd>Identification data that can be read by everyone.</dd>
- *    <dt>private-data:</dt><dd>Private data used to perform the identification check.</dd>
- *    <dt>expiration-timestamp:</dt><dd>The time of expiration of the token validity.</dd> 
- *    <dt>sha256-key:</dt><dd>Private key used to generate the SHA_256 hash.</dd>
- *   </dl>
- *   </blockquote>
- * </p>
+ * The generated token has the following form:
+ * <blockquote>
+ *  base64( public-data-separated-by ":" + expiration-timestamp + ":" +
+ *  sha256( public-data-separated-by ":" + expiration-timestamp + ":" +
+ *  private-data-separated-by ":" + {@link Sha256HEXToken#PRIVATE_KEY}) )
+ *  <dl>
+ *   <dt>public-data:</dt><dd>Identification data that can be read by everyone.</dd>
+ *   <dt>private-data:</dt><dd>Private data used to perform the identification check.</dd>
+ *   <dt>expiration-timestamp:</dt><dd>The time of expiration of the token validity.</dd> 
+ *   <dt>sha256-key:</dt><dd>Private key used to generate the SHA_256 hash.</dd>
+ *  </dl>
+ * </blockquote>
+ * 
  * <p>
- *  A common use case of this type of token is the following:
- *  <blockquote>
- *   <ul>
- *    <li>public-data = email</li>
- *    <li>private-data = password</li>
- *    <li>expiration-timestamp = timestamp in milliseconds</li> 
- *    <li>sha256-key = private key used to generate the SHA_256 hash.</li>
- *   </dl>
+ * A common use case of this type of token is the following:
+ * <blockquote>
+ *  <ul>
+ *   <li>public-data = email</li>
+ *   <li>private-data = password</li>
+ *   <li>expiration-timestamp = timestamp in milliseconds</li> 
+ *   <li>sha256-key = private key used to generate the SHA_256 hash.</li>
+ *  </ul>
  *   
- *   base64( email + ":" + expiration-timestamp + ":" + sha256( email ":" + expiration + ":" + password + ":" + {@link Sha256HEXToken#PRIVATE_KEY}) )
- *   </blockquote>
- * </p>
+ *  base64( email + ":" + expiration-timestamp + ":" + sha256( email ":" + expiration + ":" + password + ":" + {@link Sha256HEXToken#PRIVATE_KEY}) )
+ * </blockquote>
  * 
  * @author Nerd4j Team
  * @version 0.0.1, 15-09-2014
@@ -115,14 +114,13 @@ public class Sha256HEXToken
 	/**
 	 * Reads the data in the provided token.
 	 * <p>
-	 *  The token is supposed to be a valid Base64 text.
-	 * </p>
+	 * The token is supposed to be a valid Base64 text.
 	 * <p>
-	 *  This method returns an array of {@link String}s in the form
-	 *  <blockquote>
-	 *    [ public_data_1, public_data_2, ..., public_data_n, expiration, private_data_hash ]
-	 *  </blockquote>
-	 * </p>
+	 * This method returns an array of {@link String}s in the form
+	 * <blockquote>
+	 *  [ public_data_1, public_data_2, ..., public_data_n, expiration, private_data_hash ]
+	 * </blockquote>
+	 * 
 	 * @param base64Token the token to be read.
 	 * @return the data in the token.
 	 */
@@ -140,9 +138,8 @@ public class Sha256HEXToken
 	 * Performs a validation of the data in the provided token
 	 * using the provided private data and the private key.
 	 * <p>
-	 *  Computes the hash using the provided data and verifies
-	 *  that the new hash is equals to the provided one.
-	 * </p>
+	 * Computes the hash using the provided data and verifies
+	 * that the new hash is equals to the provided one.
 	 * 
 	 * @param tokenValues values read from the token usind the method {@link Sha256HEXToken#read(String)}.
 	 * @param privateData the private data that are expected to be found in the hashed field.

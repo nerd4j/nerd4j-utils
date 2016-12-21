@@ -22,7 +22,6 @@
 package org.nerd4j.cache;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 
 import org.nerd4j.util.DataConsistency;
 import org.slf4j.Logger;
@@ -34,16 +33,15 @@ import org.slf4j.LoggerFactory;
  * that performs an asynchronous update of the cache entries.
  * 
  * <p>
- *  This implementation uses an {@link ExecutorService} to
- *  execute cache updates asynchronously.
- *  <b>Note</b>: only updates are executed asynchronously
- *  because the requested data is already present in cache.
- *  The insertions are still executed in a synchronous way.
- * </p>
+ * This implementation uses an {@link java.util.concurrent.ExecutorService} to
+ * execute cache updates asynchronously.
+ * <b>Note</b>: only updates are executed asynchronously
+ * because the requested data is already present in cache.
+ * The insertions are still executed in a synchronous way.
+ *  
  * <p>
- *  This allows cache to have short response time even
- *  if the required entry has expired and need to be updated.
- * </p>
+ * This allows cache to have short response time even
+ * if the required entry has expired and need to be updated.
  * 
  * @param <Key>   type of the cache key.
  * @param <Value> type of the related data.
@@ -233,16 +231,14 @@ public class AsynchAutoLoadingCacheManager<Key extends CacheKey,Value> implement
 	/**
 	 * Inserts the given key and related value into the cache.
 	 * <p>
-	 *  As first will book the update operation using
-	 *  the method {@link CacheProvider#touch(String,CacheKey,long)}.
-	 *  Only the first thread trying the booking will succeed.
-	 *  This ensures that only one process retrieves the data
-	 *  to cache that usually is a time demanding operation.
-	 * </p>
+	 * As first will book the update operation using
+	 * the method {@link CacheProvider#touch(String,CacheKey,long)}.
+	 * Only the first thread trying the booking will succeed.
+	 * This ensures that only one process retrieves the data
+	 * to cache that usually is a time demanding operation.
 	 * <p>
-	 *  If the "touch" operation fails the method returns {@code null}.
-	 *  Otherwise it proceeds with the update and returns the new value.
-	 * </p>
+	 * If the "touch" operation fails the method returns {@code null}.
+	 * Otherwise it proceeds with the update and returns the new value.
 	 * 
 	 * @param key          key to cache.
 	 * @param dataProvider provider of the values to be cached.
@@ -284,17 +280,15 @@ public class AsynchAutoLoadingCacheManager<Key extends CacheKey,Value> implement
 	/**
 	 * Updates the entry related to the given cache key.
 	 * <p>
-	 *  As first will book the update operation using
-	 *  the method {@link CacheProvider#touch(String,CacheKey,long)}.
-	 *  Only the first thread trying the booking will succeed.
-	 *  This ensures that only one process retrieves the data
-	 *  to cache that usually is a time demanding operation.
-	 * </p>
+	 * As first will book the update operation using
+	 * the method {@link CacheProvider#touch(String,CacheKey,long)}.
+	 * Only the first thread trying the booking will succeed.
+	 * This ensures that only one process retrieves the data
+	 * to cache that usually is a time demanding operation.
 	 * <p>
-	 *  If the "touch" operation succeeds an update task will be created
-	 *  and submitted to the {@link #updatesExecutor} while the method
-	 *  returns immediately ensuring real-time performance.
-	 * </p>
+	 * If the "touch" operation succeeds an update task will be created
+	 * and submitted to the {@link #updatesExecutor} while the method
+	 * returns immediately ensuring real-time performance.
 	 * 
 	 * @param key          key to cache.
 	 * @param dataProvider provider of the values to be cached.

@@ -21,21 +21,17 @@
  */
 package org.nerd4j.resource;
 
-import java.text.MessageFormat;
-
 /**
- * Default implementation of the <code>ResourcePathResolver</code> interface.
+ * Default implementation of the {@link ResourcePathResolver} interface.
  * 
  * <p>
- *  This implementation allows to customize a <code>pattern</code>
- *  that describes the path and is dynamically builded using a
- *  {@link MessageFormat}.
- * </p>
+ * This implementation allows to customize a {@code pattern}
+ * that describes the path and is dynamically builded using a
+ * {@link java.text.MessageFormat}.
  * 
  * <p>
- *  This implementation accepts an {@link Object} array as resource identifier
- *  so it is suitable for most cases.
- * </p>
+ * This implementation accepts an {@link Object} array as resource identifier
+ * so it is suitable for most cases.
  *  
  * @author Nerd4j Team
  */
@@ -46,8 +42,8 @@ public class DefaultResourcePathResolver extends MessageFormatResourcePathResolv
 	/**
 	 * Constructor with parameters.
 	 * 
-	 * @param pathPattern a <code>pattern</code> that can be
-	 *                    construed by a {@link MessageFormat}.
+	 * @param pathPattern a {@code pattern} that can be
+	 *                    construed by a {@link java.text.MessageFormat}.
 	 */
 	public DefaultResourcePathResolver( String pathPattern )
 	{
@@ -60,8 +56,8 @@ public class DefaultResourcePathResolver extends MessageFormatResourcePathResolv
 	/**
 	 * Constructor with parameters.
 	 * 
-	 * @param pathPattern a <code>pattern</code> that can be
-	 *                    construed by a {@link MessageFormat}.
+	 * @param pathPattern a @code pattern} that can be
+	 *                    construed by a {@link java.text.MessageFormat}.
 	 * @param resourceRootPath common root path
 	 */
 	public DefaultResourcePathResolver( String resourceRootPath, String pathPattern )

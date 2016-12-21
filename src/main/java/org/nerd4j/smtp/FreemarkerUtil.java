@@ -152,7 +152,7 @@ public class FreemarkerUtil
 	 * @param model         data model to use to fill the template.
 	 * @param locale        the locale to use.
 	 * @return the resulting text.
-	 * @throws MessagingException
+	 * @throws MessagingException if the operatin fails.
 	 */
 	public static String renderTemplate( Configuration configuration, String templateName,
 			                             Map<String,?> model, Locale locale )

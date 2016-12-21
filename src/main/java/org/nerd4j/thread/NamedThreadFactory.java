@@ -28,13 +28,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * An implementation of the {@link ThreadFactory} interface that allows
  * to configure the name to associate to the created {@link Thread}s.
  * <p>
- *  The resulting {@link Thread} name will be <i>given-name</i>-pool-<i>n</i>-thread-<i>k</i> where:
- *  <ul>
- *   <li><i>given-name</i> is the name given to the factory in creation;</li>
- *   <li><i>n</i> the number of {@link NamedThreadFactory} created;</li>
- *   <li><i>k</i> the number of {@link Thread}s created by the current factory.</li>
- *  </ul>
- * </p>
+ * The resulting {@link Thread} name will be <i>given-name</i>-pool-<i>n</i>-thread-<i>k</i> where:
+ * <ul>
+ *  <li><i>given-name</i> is the name given to the factory in creation;</li>
+ *  <li><i>n</i> the number of {@link NamedThreadFactory} created;</li>
+ *  <li><i>k</i> the number of {@link Thread}s created by the current factory.</li>
+ * </ul>
  * 
  * @author Nerd4j Team
  */

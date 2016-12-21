@@ -47,10 +47,9 @@ import com.sun.mail.smtp.SMTPTransport;
  * the <tt>javax.mail</tt> API.
  * 
  * <p>
- *  This class provides static methods for the configuration
- *  of the email {@link Message}s. Provides a simple interface
- *  to the configurations most frequently used.
- * </p>
+ * This class provides static methods for the configuration
+ * of the email {@link Message}s. Provides a simple interface
+ * to the configurations most frequently used.
  *   
  * @author Nerd4j Team
  */
@@ -138,19 +137,18 @@ public class JavaMailUtil
      * Creates a new {@code SMTP} Java Mail {@link Session}
      * with the given properties.
      * <p>
-     *  The given {@link Properties} object must contain the
-     *  following values:
-     *  <ul>
-     *   <li><tt>mail.smtp.host<tt>: the {@code SMTP} server host;</li>
-     *   <li><tt>mail.smtp.port<tt>: the {@code SMTP} server port;</li>
-     *   <li><tt>mail.smtp.auth<tt>. tells if the connection requires authentication;</li>
-     *   <li><tt>mail.smtp.user<tt>: the user to be authenticated;</li>
-     *   <li><tt>mail.smtp.password<tt>: the authentication password;</li>
-     *   <li><tt>mail.smtp.secure<tt>: tells if the connection uses a secure protocol;</li>
-     *   <li><tt>mail.smtp.timeout<tt>: the protocol timeout;</li>
-     *   <li><tt>mail.smtp.connectiontimeout<tt>: the connection timeout.</li>
-     *  </ul>
-     * </p>
+     * The given {@link Properties} object must contain the
+     * following values:
+     * <ul>
+     *  <li>{@code mail.smtp.host}: the {@code SMTP} server host;</li>
+     *  <li>{@code mail.smtp.port}: the {@code SMTP} server port;</li>
+     *  <li>{@code mail.smtp.auth}: tells if the connection requires authentication;</li>
+     *  <li>{@code mail.smtp.user}: the user to be authenticated;</li>
+     *  <li>{@code mail.smtp.password}: the authentication password;</li>
+     *  <li>{@code mail.smtp.secure}: tells if the connection uses a secure protocol;</li>
+     *  <li>{@code mail.smtp.timeout}: the protocol timeout;</li>
+     *  <li>{@code mail.smtp.connectiontimeout}: the connection timeout.</li>
+     * </ul>
      *
      * @param prop   the properties to use.
      * @param debug  tells if to run in debug mode.
@@ -309,7 +307,7 @@ public class JavaMailUtil
      * 
      * @param message       the {@link Message} to modify.
      * @param senderAddress the sender email address.
-     * @throws MessagingException
+     * @throws MessagingException if the operation fails.
      */
     public static void setSender( Message message, String senderAddress )
     throws MessagingException
@@ -326,7 +324,7 @@ public class JavaMailUtil
      * @param message       the {@link Message} to modify.
      * @param senderAddress the sender email address.
      * @param senderLabel   label to be displayed by the recipient email client.
-     * @throws MessagingException
+     * @throws MessagingException if the operation fails.
      */
     public static void setSender( Message message, String senderAddress, String senderLabel )
     throws MessagingException
@@ -351,7 +349,7 @@ public class JavaMailUtil
      * 
      * @param message     the {@link Message} to modify.
      * @param recipient   the recipient email address to add.
-     * @throws MessagingException
+     * @throws MessagingException if the operation fails.
      */
     public static void addRecipient( Message message, String recipient )
     throws MessagingException
@@ -367,7 +365,7 @@ public class JavaMailUtil
      * 
      * @param message     the {@link Message} to modify.
      * @param recipient   the CC recipient email address to add.
-     * @throws MessagingException
+     * @throws MessagingException if the operation fails.
      */
     public static void addCCRecipient( Message message, String recipient )
     throws MessagingException
@@ -383,7 +381,7 @@ public class JavaMailUtil
      * 
      * @param message     the {@link Message} to modify.
      * @param recipient   the BCC recipient email address to add.
-     * @throws MessagingException
+     * @throws MessagingException if the operation fails.
      */
     public static void addBCCRecipient( Message message, String recipient )
     throws MessagingException
@@ -427,7 +425,7 @@ public class JavaMailUtil
      * @param subject   the subject of the {@link Message}.
      * @param multipart the multi-part message content.
      * @return the new created email {@link Message}.
-     * @throws MessagingException if the reation fails.
+     * @throws MessagingException if the creation fails.
      */
     private static Message createMessage( Session session, String subject, Multipart multipart )
     throws MessagingException
@@ -483,9 +481,9 @@ public class JavaMailUtil
 	/**
      * Creates a {@link BodyPart} with alternative content.
      * <p>
-     *  All the {@link BodyPart} provided to this method should contain
-     *  the same content represented in alternative forms.
-     * </p>
+     * All the {@link BodyPart} provided to this method should contain
+     * the same content represented in alternative forms.
+     * 
      * @param bodyParts alternative versions of the same content.
      * @return a {@link BodyPart} representing the aggregation of the given ones.
      * @throws MessagingException if the creation fails.

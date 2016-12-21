@@ -45,19 +45,15 @@ public class LocaleUtil
 	 * <p>
 	 * Locale name must be in form "ll_CC_variant" with:
 	 * <ul>
-	 * <li><tt>ll</tt>: lowercase two-letter language ISO-639 code</li>
-	 * <li><tt>CC</tt>: uppercase two-letter country ISO-3166 code</li>
-	 * <li><tt>ll_CC_variant</tt>: language variant</li>
+	 *  <li><tt>ll</tt>: lowercase two-letter language ISO-639 code</li>
+	 *  <li><tt>CC</tt>: uppercase two-letter country ISO-3166 code</li>
+	 *  <li><tt>ll_CC_variant</tt>: language variant</li>
 	 * </ul>
-	 * </p>
 	 * <p>
 	 * A similar method was added in Java 7 {@code Locale.forLanguageTag(String)}.
-	 * </p>
 	 * 
 	 * @param name locale name
-	 * 
 	 * @return desired locale.
-	 * 
 	 * @throws NullPointerException if given locale name is null
 	 */
 	public static final Locale getLocale( final String name ) throws NullPointerException

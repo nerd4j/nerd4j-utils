@@ -47,9 +47,8 @@ public final class FileUtil
 	/**
 	 * Creates the file and all the containing directories in the given path.
 	 * <p>
-	 *  This method assumes the leaf in the path to be a file.
-	 *  If you want to create a directory use {@link FileUtil#createWholePath(String,boolean)}.
-	 * </p>
+	 * This method assumes the leaf in the path to be a file.
+	 * If you want to create a directory use {@link FileUtil#createWholePath(String,boolean)}.
 	 * 
 	 * @param path the file path to create.
 	 * @return the new created {@link File} or {@code null} if the creation fails.
@@ -64,9 +63,8 @@ public final class FileUtil
 	/**
 	 * Creates the file and all the containing directories in the given path.
 	 * <p>
-	 *  If the {@code isDirectory} flag is {@code true} even the leaf will be
-	 *  created as a directory, otherwise will be a file with the given name.
-	 * </p> 
+	 * If the {@code isDirectory} flag is {@code true} even the leaf will be
+	 * created as a directory, otherwise will be a file with the given name.
 	 * 
 	 * @param path        the file path to create.
 	 * @param isDirectory tells if the leaf should be a directory.
@@ -82,9 +80,8 @@ public final class FileUtil
 	/**
 	 * Creates the file and all the containing directories in the given path.
 	 * <p>
-	 *  This method assumes the leaf in the path to be a file.
-	 *  If you want to create a directory use {@link FileUtil#createWholePath(String,boolean)}.
-	 * </p>
+	 * This method assumes the leaf in the path to be a file.
+	 * If you want to create a directory use {@link FileUtil#createWholePath(String,boolean)}.
 	 * 
 	 * @param path the file path to create.
 	 * @return the new created {@link File} or {@code null} if the creation fails.
@@ -99,9 +96,8 @@ public final class FileUtil
 	/**
 	 * Creates the file and all the containing directories in the given path.
 	 * <p>
-	 *  If the {@code isDirectory} flag is {@code true} even the leaf will be
-	 *  created as a directory, otherwise will be a file with the given name.
-	 * </p> 
+	 * If the {@code isDirectory} flag is {@code true} even the leaf will be
+	 * created as a directory, otherwise will be a file with the given name.
 	 * 
 	 * @param path        the file path to create.
 	 * @param isDirectory tells if the leaf should be a directory.
@@ -209,8 +205,7 @@ public final class FileUtil
 	 * Performs a copy from the given source file to the provided
 	 * destination file.
 	 * <p>
-	 *  Both files must exist.
-	 * </p>
+	 * Both files must exist.
 	 * 
 	 * @param src data source.
 	 * @param dst copy destination.
@@ -237,32 +232,16 @@ public final class FileUtil
 				throw new IOException( "Destination file " +  path + " doesn't exists." );
 			}
 	
-			FileChannel source      = null;
-			FileChannel destination = null;
-			
-			try
+			try( final FileInputStream fis = new FileInputStream( src );
+				 final FileOutputStream fos = new FileOutputStream( dst );
+				 final FileChannel source = fis.getChannel();
+				 final FileChannel destination = fos.getChannel() )
 			{
 				
 				/* File copy using the java NIO facility. */
-				source      = new FileInputStream(src).getChannel();
-				destination = new FileOutputStream(dst).getChannel();
-				
 				destination.transferFrom(source, 0, source.size());
 				
 				return true;
-				
-			} finally
-			{
-				
-				/* 
-				 * We do not consider a failure if the source file cannot be closed
-				 * as long as the whole data was successfully copied.
-				 */
-				if ( source != null )
-					CloseableUtil.closeAndSoak( (AutoCloseable) source, "Cannot properly close source file {} channel.", src.getName() );
-				
-				if ( destination != null )
-					destination.close();
 				
 			}
 			
@@ -281,7 +260,6 @@ public final class FileUtil
 	 * <p>
 	 *  If the given {@link File} represents a directory all
 	 *  the content of the directory will be deleted.
-	 * </p>
 	 * 
 	 * @param file the {@link File} to be deleted.
 	 * @return {@code true} if the remove was performed with success.
@@ -355,8 +333,7 @@ public final class FileUtil
 	 * Moves the data from the given source file to the provided
 	 * destination file.
 	 * <p>
-	 *  The source file must exist.
-	 * </p>
+	 * The source file must exist.
 	 * 
 	 * @param src data source.
 	 * @param dst data destination.

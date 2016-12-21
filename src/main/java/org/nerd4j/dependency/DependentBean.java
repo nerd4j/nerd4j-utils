@@ -31,7 +31,6 @@ import java.util.Set;
  * <i>Note:</i> given that a type can depend only from other
  * {@code DependentBean} it needs to declare only direct dependencies. Other
  * dependencies will be inherited from the dependency tree.
- * </p>
  * 
  * @author Nerd4j Team
  */

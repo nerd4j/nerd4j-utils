@@ -28,18 +28,17 @@ import java.util.Arrays;
  * This class permits calculations about prime numbers.
  * 
  * <p>
- *  This class uses an implementation of the Eratosthenes Sieve
- *  to get all the prime numbers less or equal than a given number.
- * </p>
+ * This class uses an implementation of the Eratosthenes Sieve
+ * to get all the prime numbers less or equal than a given number.
+ * 
  * <p>
- *  This class keeps the bit-array used to compute the Eratosthenes Sieve
- *  so if the requested prime number is very big this class needs and keeps
- *  allocated a lot of memory.  
- * </p>
+ * This class keeps the bit-array used to compute the Eratosthenes Sieve
+ * so if the requested prime number is very big this class needs and keeps * 
+ * allocated a lot of memory.  
+ * 
  * <p>
- *  Using the method {@link #clean()} the memory can be freed but all the
- *  computed primes will be lost and need to be computed again.
- * </p>
+ * Using the method {@link #clean()} the memory can be freed but all the
+ * computed primes will be lost and need to be computed again.
  * 
  * @author Nerd4j Team
  */
@@ -75,14 +74,12 @@ public class PrimeSieve
 
 	/**
 	 * Contains data for Eratosthenes Sieve.
-	 * 
 	 * <p>
-	 *  For each bit in this bit-field:
-	 *  <ul>
-	 *   <li>0 means that the related position is not prime,</li>
-	 *   <li>1 means that the related position is prime.</li>
-	 *  </ul>
-	 * </p>
+	 * For each bit in this bit-field:
+	 * <ul>
+	 *  <li>0 means that the related position is not prime,</li>
+	 *  <li>1 means that the related position is prime.</li>
+	 * </ul>
 	 */
 	private int[] primePool;
 	
@@ -109,8 +106,7 @@ public class PrimeSieve
 	/**
 	 * Tells if the given value is a prime number.
 	 * <p>
-	 *  The given value must belong to the interval [0,{@link Integer#MAX_VALUE}).
-	 * </p>
+	 * The given value must belong to the interval [0,{@link Integer#MAX_VALUE}).
 	 * 
 	 * @param value the value to check.
 	 * @return {@code true} if it is a prime number, {@code false} otherwise.
@@ -127,9 +123,9 @@ public class PrimeSieve
 	/**
 	 * Returns the first prime number greater or equal than the provided value.
 	 * <p>
-	 *  If there are no prime numbers grater or equal than the given threshold
-	 *  within the internal bounds the value {@code -1} will be returned.
-	 * </p>
+	 * If there are no prime numbers grater or equal than the given threshold
+	 * within the internal bounds the value {@code -1} will be returned.
+	 * 
 	 * @param  value the threshold value.
 	 * @return the prime found if any, {@code -1} otherwise.
 	 */
@@ -144,9 +140,9 @@ public class PrimeSieve
 	/**
 	 * Returns the first prime number less or equal than the provided value.
 	 * <p>
-	 *  If there are no prime numbers less or equal than the given threshold
-	 *  within the internal bounds the value {@code -1} will be returned.
-	 * </p>
+	 * If there are no prime numbers less or equal than the given threshold
+	 * within the internal bounds the value {@code -1} will be returned.
+	 * 
 	 * @param  value the threshold value.
 	 * @return the prime found if any, {@code -1} otherwise.
 	 */
@@ -179,8 +175,7 @@ public class PrimeSieve
 	/**
 	 * Tells if the given value is a prime number.
 	 * <p>
-	 *  The given value must belong to the interval [0,{@link Integer#MAX_VALUE}).
-	 * </p>
+	 * The given value must belong to the interval [0,{@link Integer#MAX_VALUE}).
 	 * 
 	 * @param value the value to check.
 	 * @return {@code true} if it is a prime number, {@code false} otherwise.
@@ -207,9 +202,9 @@ public class PrimeSieve
 	/**
 	 * Returns the first prime number greater or equal than the provided value.
 	 * <p>
-	 *  If there are no prime numbers grater or equal than the given threshold
-	 *  within the internal bounds the value {@value -1} will be returned.
-	 * </p>
+	 * If there are no prime numbers grater or equal than the given threshold
+	 * within the internal bounds the value {@value -1} will be returned.
+	 * 
 	 * @param  value the threshold value.
 	 * @return the prime found if any, {@value -1} otherwise.
 	 */
@@ -266,9 +261,9 @@ public class PrimeSieve
 	/**
 	 * Returns the first prime number less or equal than the provided value.
 	 * <p>
-	 *  If there are no prime numbers less or equal than the given threshold
-	 *  within the internal bounds the value {@value -1} will be returned.
-	 * </p>
+	 * If there are no prime numbers less or equal than the given threshold
+	 * within the internal bounds the value {@value -1} will be returned.
+	 * 
 	 * @param  value the threshold value.
 	 * @return the prime found if any, {@value -1} otherwise.
 	 */
@@ -330,9 +325,8 @@ public class PrimeSieve
 	 * Ensures that the internal {@link #primePool} is big enough
 	 * to contain the given value.
 	 * <p>
-	 *  If the requested value is not in the interval [0,{@link Integer#MAX_VALUE})
-	 *  an {@link IndexOutOfBoundsException} will be thrown.
-	 * </p>
+	 * If the requested value is not in the interval [0,{@link Integer#MAX_VALUE})
+	 * an {@link IndexOutOfBoundsException} will be thrown.
 	 * 
 	 * @param value the value to check.
 	 * @throws IndexOutOfBoundsException if the not in the interval [0,{@link Integer#MAX_VALUE}).
@@ -464,9 +458,8 @@ public class PrimeSieve
 	/**
 	 * This method actually performs the Eratosthenes Sieve algorithm.
 	 * <p>
-	 *  This method can be called with a partially computed bit-array
-	 *  therefore it requires the index of the block to start with.
-	 * </p>
+	 * This method can be called with a partially computed bit-array
+	 * therefore it requires the index of the block to start with.
 	 * 
 	 * @param data       the data to sift.
 	 * @param startBlock the block to start with.

@@ -47,6 +47,8 @@ public class DefaultDependencyResolver implements DependencyResolver
 	
 	/**
 	 * Returns the Singleton instance.
+	 * 
+	 * @return the singleton instance.
 	 */
 	public static DependencyResolver getInstance()
 	{
@@ -56,13 +58,25 @@ public class DefaultDependencyResolver implements DependencyResolver
 	/**
 	 * Create a new {@link DefaultDependencyResolver}.
 	 */
-	private DefaultDependencyResolver() {}
+	private DefaultDependencyResolver()
+	{
+		
+		super();
+		
+	}
+	
+	
+	/* ******************* */
+	/*  INTERFACE METHODS  */
+	/* ******************* */
+	
 	
 	/**
 	 * Resolves the dependencies of a collection of {@link DependentBean}
 	 * returning the dependencies in the order they need to be resolved.
 	 * 
 	 * @param depenentBeans collection of dependencies to be evaluated.
+	 * @param <X> actual type of the {@link DependentBean}.
 	 * @return ordered list of dependencies.
 	 */
 	@Override
@@ -72,8 +86,7 @@ public class DefaultDependencyResolver implements DependencyResolver
 		logger.debug( "Building virtual dependency root node." );
 		
 		/* Creates a new root for the dependency tree. */
-		@SuppressWarnings("unchecked")
-		final DependentBean root = new VirtualRoot( ( Collection<DependentBean> ) depenentBeans );
+		final DependentBean root = new VirtualRoot( depenentBeans );
 		
 		/* Resolves the dependencies from starting from the new created root. */
 		final List<DependentBean> resolved = dependencyResolve( root );
@@ -94,6 +107,7 @@ public class DefaultDependencyResolver implements DependencyResolver
 	 * returning the dependencies in the order they need to be resolved.
 	 * 
 	 * @param root the root of the dependency subtree.
+	 * @param <X> actual type of the {@link DependentBean}.
 	 * @return ordered list of dependencies.
 	 */
 	@Override
@@ -106,6 +120,11 @@ public class DefaultDependencyResolver implements DependencyResolver
 		return solution;
 		
 	}
+	
+	
+	/* ***************** */
+	/*  PRIVATE METHODS  */
+	/* ***************** */
 	
 	/**
 	 * Resolves the order of the dependencies.
@@ -131,7 +150,6 @@ public class DefaultDependencyResolver implements DependencyResolver
 	 *  will be appended to the list of resolved dependencies.
 	 *  Every dependency handled during the process will be added
 	 *  to the set of visited dependencies.
-	 * </p>
 	 * 
 	 * @param root     the root of the dependency subtree.
 	 * @param resolved list of resolved dependencies.
@@ -254,6 +272,12 @@ public class DefaultDependencyResolver implements DependencyResolver
 		
 	}
 	
+
+	/* *************** */
+	/*  INNER CLASSES  */
+	/* *************** */
+
+	
 	/**
 	 * Virtual dependency tree root. Used when a dependency collection
 	 * resolution is requested (essentially create a new tree joining multiple
@@ -264,31 +288,55 @@ public class DefaultDependencyResolver implements DependencyResolver
 	private class VirtualRoot implements ConfigurableDependentBean
 	{
 
+		/** Set to be used to ensure that every instance of {@link DependentBean} is unique. */ 
 		private Set<DependentBean> dependencies;
 		
-		public VirtualRoot( Collection<DependentBean> dependencies )
+		
+		/**
+		 * Constructor with parameters.
+		 * 
+		 * @param dependencies the dependencies to use for building the tree.
+		 */
+		public VirtualRoot( Collection<? extends DependentBean> dependencies )
 		{
+			
+			super();
 			
 			this.dependencies = new HashSet<DependentBean>( dependencies );
 			
 		}
 		
+		
+		/* ******************* */
+		/*  INTERFACE METHODS  */
+		/* ******************* */
+
+		
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
-		public boolean addDepenency(DependentBean dependency)
+		public boolean addDepenency( DependentBean dependency )
 		{
 			
 			return dependencies.add( dependency );
 			
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
-		public boolean removeDepenency(DependentBean dependency)
+		public boolean removeDepenency( DependentBean dependency )
 		{
 			
 			return dependencies.remove( dependency );
 			
 		}
 
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public Set<DependentBean> getDependencies()
 		{

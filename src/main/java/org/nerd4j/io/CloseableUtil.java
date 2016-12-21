@@ -45,7 +45,6 @@ public final class CloseableUtil
 	 * Close a {@link AutoCloseable} instance soaking every exception tha may appear.
 	 * <p>
 	 * If an exception is throw while closing it will be logged at <tt>warn</tt> level.
-	 * </p>
 	 * 
 	 * @param closeable instance to close.
 	 * @return {@code true} if give instance has been closed without errors.
@@ -61,7 +60,6 @@ public final class CloseableUtil
 	 * Close a {@link AutoCloseable} instance soaking every exception tha may appear.
 	 * <p>
 	 * If an exception is throw while closing it will be logged at <tt>warn</tt> level.
-	 * </p>
 	 * 
 	 * @param closeable    instance to close.
 	 * @param errorMessage error message
@@ -78,7 +76,6 @@ public final class CloseableUtil
 	 * Close a {@link AutoCloseable} instance soaking every exception tha may appear.
 	 * <p>
 	 * If an exception is throw while closing it will be logged at <tt>warn</tt> level.
-	 * </p>
 	 * 
 	 * @param closeable    instance to close.
 	 * @param errorMessage slf4j formatted error message
@@ -130,7 +127,6 @@ public final class CloseableUtil
 	 * Close a {@link Closeable} instance soaking every exception tha may appear.
 	 * <p>
 	 * If an exception is throw while closing it will be logged at <tt>warn</tt> level.
-	 * </p>
 	 * 
 	 * @param closeable instance to close.
 	 * @return {@code true} if give instance has been closed without errors.
@@ -148,7 +144,6 @@ public final class CloseableUtil
 	 * Close a {@link Closeable} instance soaking every exception tha may appear.
 	 * <p>
 	 * If an exception is throw while closing it will be logged at <tt>warn</tt> level.
-	 * </p>
 	 * 
 	 * @param closeable    instance to close.
 	 * @param errorMessage error message
@@ -167,7 +162,6 @@ public final class CloseableUtil
 	 * Close a {@link Closeable} instance soaking every exception tha may appear.
 	 * <p>
 	 * If an exception is throw while closing it will be logged at <tt>warn</tt> level.
-	 * </p>
 	 * 
 	 * @param closeable    instance to close.
 	 * @param errorMessage slf4j formatted error message

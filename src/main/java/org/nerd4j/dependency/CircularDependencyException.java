@@ -22,8 +22,7 @@
 package org.nerd4j.dependency;
 
 /**
- * <code>CircularDependencyException</code> represent an error caused by a
- * circular unresolvable dependency.
+ * Represent an error caused by a circular unresolvable dependency.
  * 
  * @author Nerd4j Team
  */

@@ -34,8 +34,8 @@ public interface ConfigurableDependentBean extends DependentBean
 	 * Add a new direct dependency.
 	 * 
 	 * @param dependency bean from which depend.
-	 * @return <code>true</code> if the dependency has been added; <br/>
-	 *         <code>false</code> if the dependency hasn't been added because
+	 * @return {@code true} if the dependency has been added; <br>
+	 *         {@code false} if the dependency hasn't been added because
 	 *         already existing.
 	 */
 	public boolean addDepenency( DependentBean dependency );
@@ -44,8 +44,8 @@ public interface ConfigurableDependentBean extends DependentBean
 	 * Remove a direct dependency.
 	 * 
 	 * @param dependency dependency to remove.
-	 * @return <code>true</code> if the dependency has been removed; <br/>
-	 *         <code>false</code> if the dependency hasn't been removed because
+	 * @return {@code true} if the dependency has been removed; <br>
+	 *         {@code false} if the dependency hasn't been removed because
 	 *         not existing.
 	 */
 	public boolean removeDepenency( DependentBean dependency );

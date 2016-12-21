@@ -92,8 +92,7 @@ public class SimpleMailSender
     /**
      * Initialization method used to configure the {@code SMTP} session properties.
      * <p>
-     *  This method must be called before any other in this class.
-     * </p>
+     * This method must be called before any other in this class.
      * 
      * @throws MessagingException if the initialization fails.
      */

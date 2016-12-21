@@ -31,10 +31,9 @@ import org.slf4j.LoggerFactory;
  * that performs a synchronous update of the cache entries.
  * 
  * <p>
- *  This implementation uses the same thread that requires
- *  an entry to retrieve the related value if the key is
- *  not present or expired.
- * </p>
+ * This implementation uses the same thread that requires
+ * the entry to retrieve the related value if the key is
+ * not present or expired.
  * 
  * @param <Key>   type of the cache key.
  * @param <Value> type of the objects stored in the cache.
@@ -101,7 +100,7 @@ public class SynchAutoLoadingCacheManager<Key extends CacheKey,Value> implements
 	 * @param touchDuration number of seconds to postpone a cache entry expiration.
 	 */
 	public SynchAutoLoadingCacheManager( CacheProvider<Value> cacheProvider, String cacheRegion,
-			                               int cacheDuration, int touchDuration )
+			                             int cacheDuration, int touchDuration )
 	{
 		
 		super();
@@ -170,10 +169,10 @@ public class SynchAutoLoadingCacheManager<Key extends CacheKey,Value> implements
 		{
 			
 			log.error( "Unable to read " + cacheRegion + " Cache for key " + key, ex );
+			return null;
 			
 		}
 		
-		return null;
 		
 	}
 	
@@ -208,19 +207,16 @@ public class SynchAutoLoadingCacheManager<Key extends CacheKey,Value> implements
 	/**
 	 * Inserts the given key and related value into the cache.
 	 * <p>
-	 *  If the given key is already present will be replaced.
-	 * </p>
+	 * If the given key is already present will be replaced.
 	 * <p>
-	 *  As first will book the update operation using
-	 *  the method {@link CacheProvider#touch(String,CacheKey,long)}.
-	 *  Only the first thread trying the booking will succeed.
-	 *  This ensures that only one process retrieves the data
-	 *  to cache that usually is a time demanding operation.
-	 * </p>
+	 * As first will book the update operation using
+	 * the method {@link CacheProvider#touch(String,CacheKey,long)}.
+	 * Only the first thread trying the booking will succeed.
+	 * This ensures that only one process retrieves the data
+	 * to cache that usually is a time demanding operation.
 	 * <p>
-	 *  If the "touch" operation fails the method returns {@code null}.
-	 *  Otherwise it proceeds with the update and returns the new value.
-	 * </p>
+	 * If the "touch" operation fails the method returns {@code null}.
+	 * Otherwise it proceeds with the update and returns the new value.
 	 * 
 	 * @param key          key to cache.
 	 * @param dataProvider provider of the values to be cached.
@@ -246,7 +242,6 @@ public class SynchAutoLoadingCacheManager<Key extends CacheKey,Value> implements
 			cacheProvider.put( cacheRegion, key, value, cacheDuration );
 			
 			return value;
-
 						
 		}catch( Exception ex )
 		{

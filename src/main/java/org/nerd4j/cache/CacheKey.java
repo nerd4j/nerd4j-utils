@@ -27,16 +27,14 @@ package org.nerd4j.cache;
  * and the related {@link CacheProvider}s.
  * 
  * <p>
- *  All the implementations of this interface need to properly
- *  implement the methods {@link #equals(Object)} e {@link #hashCode()}.
- * </p>
+ * All the implementations of this interface need to properly
+ * implement the methods {@link #equals(Object)} e {@link #hashCode()}.
  * 
  * <p>
- *  Besides all implementations of this interface need to properly
- *  implement the {@link #serialize()} method so that the {@code region}
- *  appears in the serialized form and {@code a.serialize().equals(b.serialize())}
- *  if and only if {@code a.equals(b)}.
- * </p>
+ * Besides all implementations of this interface need to properly
+ * implement the {@link #serialize()} method so that the {@code region}
+ * appears in the serialized form and {@code a.serialize().equals(b.serialize())}
+ * if and only if {@code a.equals(b)}.
  * 
  * @author Nerd4j Team
  */
@@ -49,9 +47,8 @@ public interface CacheKey
 	 * if {@code a} and {@code b} are two instances of {@link CacheKey},
 	 * {@code a.stringKey().equals(b.stringKey())} if and only if {@code a.equals(b)}.
 	 * <p>
-	 *  All the implementations of {@link #serialize()} must add the
-	 *  {@code region} value to the serialized form.
-	 * </p>
+	 * All the implementations of {@link #serialize()} must add the
+	 * {@code region} value to the serialized form.
 	 * 
 	 * @return textual representation of the key.
 	 */

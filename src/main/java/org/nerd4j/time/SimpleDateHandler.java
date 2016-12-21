@@ -29,10 +29,9 @@ import java.util.TimeZone;
  * Utility class to perform operations over {@link Date} and {@link Calendar} objects.
  * 
  * <p>
- *  Performs operations like add and remove time from dates
- *  and allows to round dates to a specific {@link TimeUnit}
- *  in a easy way.
- * </p>
+ * Performs operations like add and remove time from dates
+ * and allows to round dates to a specific {@link TimeUnit}
+ * in a easy way.
  * 
  * @author Nerd4j Team
  */
@@ -96,7 +95,7 @@ public class SimpleDateHandler
      * 
      * @param date     date to be truncated.
      * @param timeUnit time unit value.
-     * @param timeZone a specific <code>TimeZone</code>.
+     * @param timeZone a specific {@code TimeZone}.
      * @return the same date truncated to the given time unit.
      */
 	public static Date truncate( Date date, TimeUnit timeUnit, TimeZone timeZone )
@@ -131,7 +130,7 @@ public class SimpleDateHandler
      * @param amount   amount of {@link TimeUnit} to add.
      * @param timeUnit time unit value.
      * @param date     date to be modified.
-     * @param timeZone a specific <code>TimeZone</code>.
+     * @param timeZone a specific {@code TimeZone}.
      * @return the modified date.
      */
 	public static Date add( int amount, TimeUnit timeUnit, Date date, TimeZone timeZone )
@@ -163,17 +162,16 @@ public class SimpleDateHandler
 	 * Verifies if the {@link Date} to be evaluated
 	 * is between the start {@link Date} and the end {@link Date}.
 	 * <p>
-	 *  A date is considered to be included if:
+	 * A date is considered to be included if:
 	 * <pre>
-	 * start &lt;= evaluated &lt; end
+	 *  start &lt;= evaluated &lt; end
 	 * </pre>
-	 * </p>
 	 * 
 	 * @param evaluated date to be evaluated.
 	 * @param start     start of the period (inclusive)
 	 * @param end       end of the period (exclusive)
-	 * @return <code>true</code> if the date is included;<br/>
-	 *         <code>false</code> otherwise.
+	 * @return {@code true} if the date is included;<br>
+	 *         {@code false} otherwise.
 	 */
 	public static boolean isBetween( Date evaluated, Date start, Date end )
 	{
@@ -187,21 +185,19 @@ public class SimpleDateHandler
      * is between the start unix time stamp and
      * the end unix time stamp.
      * <p>
-     *  The given values are supposed to follow the Java specifications ie:
-     *  <i>milliseconds elapsed since 01/01/1970 00:00:00 UTC</i>;
-     * </p>
+     * The given values are supposed to follow the Java specifications ie:
+     * <i>milliseconds elapsed since 01/01/1970 00:00:00 UTC</i>;
      * <p>
-     *  A date is considered to be included if:
-     *  <pre>
-     *   start &lt;= evaluated &lt; end
-     *  </pre>
-     * </p>
+     * A date is considered to be included if:
+     * <pre>
+     *  start &lt;= evaluated &lt; end
+     * </pre>
      * 
      * @param evaluated time stamp to be evaluated.
      * @param start     start of the period (inclusive)
      * @param end       end of the period (exclusive)
-     * @return <code>true</code> if the date is included;<br/>
-     *         <code>false</code> otherwise.
+     * @return {@code true} if the date is included;<br>
+     *         {@code false} otherwise.
      */
 	public static boolean isBetween( long evaluated, long start, long end )
 	{
@@ -217,16 +213,15 @@ public class SimpleDateHandler
 
 	
 	/**
-	 * Returns the {@link Calendar} adjusted for the given <code>TimeZone</code>.
+	 * Returns the {@link Calendar} adjusted for the given {@code TimeZone}.
 	 * <p>
-	 *  If the given identifier is inconsistent, <code>null</code> or does
-	 *  not match any defined <code>TimeZone</code>, the default {@link Calendar}
-	 *  will be returned.
-	 * </p>
+	 * If the given identifier is inconsistent, {@code null} or does
+	 * not match any defined {@code TimeZone}, the default {@link Calendar}
+	 * will be returned.
 	 * 
 	 * @param date      the date to initialize the calendar with.
-	 * @param timeZonea specific <code>TimeZone</code>.
-	 * @return {@link Calendar} adjusted for the given <code>TimeZone</code>.
+	 * @param timeZonea specific {@code TimeZone}.
+	 * @return {@link Calendar} adjusted for the given {@code TimeZone}.
 	 */
 	private static Calendar getCalendar( Date date, TimeZone timeZone )
 	{

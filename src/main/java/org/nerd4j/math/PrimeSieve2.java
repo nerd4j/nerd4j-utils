@@ -28,37 +28,36 @@ import java.util.Arrays;
  * This class permits calculations about prime numbers.
  * 
  * <p>
- *  This class uses an implementation of the Eratosthenes Sieve
- *  to get all the prime numbers less or equal than a given number.
- * </p>
+ * This class uses an implementation of the Eratosthenes Sieve
+ * to get all the prime numbers less or equal than a given number.
+ * 
  * <p>
- *  This implementation is an improvement compared to {@link PrimeSieve}
- *  in the sense that it works with {@code long} instead of working
- *  with {@code int}. However it handles only numbers in the interval
- *  {@code [0,2^38-128)} i.e. {@code [0,Integer.MAX_VALUE * Long.SIZE * 2)}.
- * </p> 
+ * This implementation is an improvement compared to {@link PrimeSieve}
+ * in the sense that it works with {@code long} instead of working
+ * with {@code int}. However it handles only numbers in the interval
+ * {@code [0,2^38-128)} i.e. {@code [0,Integer.MAX_VALUE * Long.SIZE * 2)}.
+ * 
  * <p>
- *  This class keeps the bit-array used to compute the Eratosthenes Sieve
- *  so if the requested prime number is very big this class needs and keeps
- *  allocated a lot of memory. To tell if the required N is prime it needs
- *  up to N bits (therefore up to N/8 bytes) of memory.
- * </p>
+ * This class keeps the bit-array used to compute the Eratosthenes Sieve
+ * so if the requested prime number is very big this class needs and keeps
+ * allocated a lot of memory. To tell if the required N is prime it needs
+ * up to N bits (therefore up to N/8 bytes) of memory.
+ * 
  * <p>
- *  The limit of {@code 2^38-128} is based on the fact that the JVM does not allow
- *  to allocate an array with a size greater than {@link Integer.MAX_VALUE}, but
- *  the platform-specific limits can be more restrictive.  
- * </p>
+ * The limit of {@code 2^38-128} is based on the fact that the JVM does not allow
+ * to allocate an array with a size greater than {@link Integer#MAX_VALUE}, but
+ * the platform-specific limits can be more restrictive.
+ *   
  * <p>
- *  However, if the required N is too big you may run into a {@link java.lang.OutOfMemoryError},
- *  for example finding all primes in the interval {@code [0,2^38-128)} requires {@code 16Gb} of memory.
- *  You can use the method {@link PrimeSieve2#getMemoryOccupation(long)} to know the memory occupation
- *  given the interval upper limit and you can use the method {@link PrimeSieve2#getComputableIntervalUpperLimit(long)}
- *  to know the computable interval using the given amount of memory.
- * </p>
+ * However, if the required N is too big you may run into a {@link java.lang.OutOfMemoryError},
+ * for example finding all primes in the interval {@code [0,2^38-128)} requires {@code 16Gb} of memory.
+ * You can use the method {@link PrimeSieve2#getMemoryOccupation(long)} to know the memory occupation
+ * given the interval upper limit and you can use the method {@link PrimeSieve2#getComputableIntervalUpperLimit(long)}
+ * to know the computable interval using the given amount of memory.
+ * 
  * <p> 
- *  Using the method {@link #clean()} the memory can be freed but all the
- *  computed primes will be lost and need to be computed again.
- * </p>
+ * Using the method {@link #clean()} the memory can be freed but all the
+ * computed primes will be lost and need to be computed again.
  * 
  * @author Nerd4j Team
  */
@@ -78,7 +77,7 @@ public class PrimeSieve2
 
 	/**
 	 * The limit of blocks that can be allocated is given by
-	 * the current limits of array size that is {@link Integer.MAX_VALUE}.
+	 * the current limits of array size that is {@link Integer#MAX_VALUE}.
 	 */
 	private static final int BLOCK_LIMIT = Integer.MAX_VALUE;
 	
@@ -95,14 +94,12 @@ public class PrimeSieve2
 
 	/**
 	 * Contains data for Eratosthenes Sieve.
-	 * 
 	 * <p>
-	 *  For each bit in this bit-field:
-	 *  <ul>
-	 *   <li>0 means that the related position is not prime,</li>
-	 *   <li>1 means that the related position is prime.</li>
-	 *  </ul>
-	 * </p>
+	 * For each bit in this bit-field:
+	 * <ul>
+	 *  <li>0 means that the related position is not prime,</li>
+	 *  <li>1 means that the related position is prime.</li>
+	 * </ul>
 	 */
 	private long[] primePool;
 	
@@ -129,13 +126,11 @@ public class PrimeSieve2
 	/**
 	 * Tells if the given value is a prime number.
 	 * <p>
-	 *  The given value must belong to the interval [0,2^38-128),
-	 *  but must take into consideration the amount of memory
-	 *  available for the computation.
-	 * </p>
+	 * The given value must belong to the interval [0,2^38-128),
+	 * but must take into consideration the amount of memory
+	 * available for the computation.
 	 * <p>
-	 *  The computation for value N takes up to N/8 bytes of memory.
-	 * </p>
+	 * The computation for value N takes up to N/8 bytes of memory.
 	 * 
 	 * @param value the value to check.
 	 * @return {@code true} if it is a prime number, {@code false} otherwise.
@@ -153,9 +148,9 @@ public class PrimeSieve2
 	/**
 	 * Returns the first prime number greater or equal than the provided value.
 	 * <p>
-	 *  If there are no prime numbers grater or equal than the given threshold
-	 *  within the internal bounds the value {@code -1} will be returned.
-	 * </p>
+	 * If there are no prime numbers grater or equal than the given threshold
+	 * within the internal bounds the value {@code -1} will be returned.
+	 * 
 	 * @param  value the threshold value.
 	 * @return the prime found if any, {@code -1} otherwise.
 	 */
@@ -170,9 +165,9 @@ public class PrimeSieve2
 	/**
 	 * Returns the first prime number less or equal than the provided value.
 	 * <p>
-	 *  If there are no prime numbers less or equal than the given threshold
-	 *  within the internal bounds the value {@code -1} will be returned.
-	 * </p>
+	 * If there are no prime numbers less or equal than the given threshold
+	 * within the internal bounds the value {@code -1} will be returned.
+	 * 
 	 * @param  value the threshold value.
 	 * @return the prime found if any, {@code -1} otherwise.
 	 */
@@ -188,9 +183,8 @@ public class PrimeSieve2
 	 * Returns the maximum amount of memory (in bytes) needed
 	 * to compute all primes in the interval {@code [0,intervalUpperLimit)}.
 	 * <p>
-	 *  In any case the given value must belong to the interval
-	 *  {@code [0,2^38-128)}.
-	 * </p>
+	 * In any case the given value must belong to the interval
+	 * {@code [0,2^38-128)}.
 	 *  
 	 * @param intervalUpperLimit the upper limit of the interval to compute.
 	 * @return the needed amount of memory expressed in bytes.
@@ -285,13 +279,11 @@ public class PrimeSieve2
 	/**
 	 * Tells if the given value is a prime number.
 	 * <p>
-	 *  The given value must belong to the interval [0,2^38-128),
-	 *  but must take into consideration the amount of memory
-	 *  available for the computation.
-	 * </p>
+	 * The given value must belong to the interval [0,2^38-128),
+	 * but must take into consideration the amount of memory
+	 * available for the computation.
 	 * <p>
-	 *  The computation for value N takes up to N/8 bytes of memory.
-	 * </p>
+	 * The computation for value N takes up to N/8 bytes of memory.
 	 * 
 	 * @param value the value to check.
 	 * @return {@code true} if it is a prime number, {@code false} otherwise.
@@ -319,9 +311,9 @@ public class PrimeSieve2
 	/**
 	 * Returns the first prime number greater or equal than the provided value.
 	 * <p>
-	 *  If there are no prime numbers grater or equal than the given threshold
-	 *  within the internal bounds the value {@value -1} will be returned.
-	 * </p>
+	 * If there are no prime numbers grater or equal than the given threshold
+	 * within the internal bounds the value {@value -1} will be returned.
+	 * 
 	 * @param  value the threshold value.
 	 * @return the prime found if any, {@value -1} otherwise.
 	 */
@@ -378,9 +370,9 @@ public class PrimeSieve2
 	/**
 	 * Returns the first prime number less or equal than the provided value.
 	 * <p>
-	 *  If there are no prime numbers less or equal than the given threshold
-	 *  within the internal bounds the value {@value -1} will be returned.
-	 * </p>
+	 * If there are no prime numbers less or equal than the given threshold
+	 * within the internal bounds the value {@value -1} will be returned.
+	 * 
 	 * @param  value the threshold value.
 	 * @return the prime found if any, {@value -1} otherwise.
 	 */
@@ -442,9 +434,8 @@ public class PrimeSieve2
 	 * Ensures that the internal {@link #primePool} is big enough
 	 * to contain the given value.
 	 * <p>
-	 *  If the requested value is not in the interval [0,{@link Integer#MAX_VALUE})
-	 *  an {@link IndexOutOfBoundsException} will be thrown.
-	 * </p>
+	 * If the requested value is not in the interval [0,{@link Integer#MAX_VALUE})
+	 * an {@link IndexOutOfBoundsException} will be thrown.
 	 * 
 	 * @param value the value to check.
 	 * @throws IndexOutOfBoundsException if the not in the interval [0,{@link Integer#MAX_VALUE}).
@@ -573,9 +564,8 @@ public class PrimeSieve2
 	/**
 	 * This method actually performs the Eratosthenes Sieve algorithm.
 	 * <p>
-	 *  This method can be called with a partially computed bit-array
-	 *  therefore it requires the index of the block to start with.
-	 * </p>
+	 * This method can be called with a partially computed bit-array
+	 * therefore it requires the index of the block to start with.
 	 * 
 	 * @param data       the data to sift.
 	 * @param startBlock the block to start with.

@@ -31,16 +31,15 @@ import javax.crypto.spec.SecretKeySpec;
  * Utility static class to handle common text hashing.
  * 
  * <p>
- *  Uses the native {@code java} {@link MessageDigest}
- *  framework but provides a simplier and ready to use
- *  interface. The available digest algorithms are:
- *  <ul>
- *   <li>MD5</li>
- *   <li>HMAC-MD5</li>
- *   <li>HMAC-SHA1</li>
- *   <li>HMAC-SHA256</li>
- *  </ul>
- * </p>
+ * Uses the native {@code java} {@link MessageDigest}
+ * framework but provides a simplier and ready to use
+ * interface. The available digest algorithms are:
+ * <ul>
+ *  <li>MD5</li>
+ *  <li>HMAC-MD5</li>
+ *  <li>HMAC-SHA1</li>
+ *  <li>HMAC-SHA256</li>
+ * </ul>
  * 
  * @author Nerd4j Team
  */

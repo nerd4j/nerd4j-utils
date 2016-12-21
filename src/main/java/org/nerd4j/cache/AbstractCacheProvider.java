@@ -32,14 +32,13 @@ import org.slf4j.LoggerFactory;
  * Abstract class common to all the implementations of the {@link CacheProvider} interface.
  * 
  * <p>
- *  This class provides an implementation of the common operations
- *  for example the eviction strategies.
- * </p>
+ * This class provides an implementation of the common operations
+ * for example the eviction strategies.
+ * 
  * <p>
- *  To prevent bulk operation to force all keys to expire in the same moment,
- *  this implementation provides a way to randomize the cache duration within
- *  configurable parameters.
- * </p>
+ * To prevent bulk operation to force all keys to expire in the same moment,
+ * this implementation provides a way to randomize the cache duration within
+ * configurable parameters.
  * 
  * @param <Value> type of data in the cache entry.
  * 
@@ -84,9 +83,8 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 	/**
 	 * Constructor with parameters.
 	 * <p>
-	 *  The provided value must be between {@link #MIN_DURATION_ADJUSTMENT}
-	 *  and {@link #MAX_DURATION_ADJUSTMENT}.
-	 * </p>
+	 * The provided value must be between {@link #MIN_DURATION_ADJUSTMENT}
+	 * and {@link #MAX_DURATION_ADJUSTMENT}.
 	 * 
 	 * @param durationAdjustment the cache duration adjustment.
 	 */
@@ -280,11 +278,10 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 	 * Returns the duration adjusted by a random value
 	 * within the configured bounds.
 	 * <p>
-	 *  The returned duration belongs to the interval:
+	 * The returned duration belongs to the interval:
 	 * <pre>
 	 * [ duration-durationAdjustment, duration+durationAdjustment ]
 	 * </pre>
-	 * </p>
 	 * 
 	 * @param duration the duration to adjust.
 	 * @return the modified duration.
@@ -342,14 +339,13 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 	/**
 	 * Returns the cache entry related to the given key.
 	 * <p>
-	 *  If the given key was never being cached {@code null}
-	 *  will be returned, otherwise will be returned a
-	 *  {@link CacheEntry} containing the cached value 
-	 *  and the expiration time.
-	 * </p>
+	 * If the given key was never being cached {@code null}
+	 * will be returned, otherwise will be returned a
+	 * {@link CacheEntry} containing the cached value 
+	 * and the expiration time.
 	 * 
 	 * @param key the cache key to search for.
-	 * @return the entry related to the given key if any, {@value null} otherwise.
+	 * @return the entry related to the given key if any, {@code null} otherwise.
 	 */
 	protected abstract CacheEntry<Value> get( String key );
 	
@@ -357,9 +353,8 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 	 * Binds the given entry to the given key and
 	 * put it into the underlying cache.
 	 * <p>
-	 *  If the given key is already present into the cache
-	 *  will be replaced.
-	 * </p> 
+	 * If the given key is already present into the cache
+	 * will be replaced.
 	 * 
 	 * @param key      key to be cached.
 	 * @param entry    entry to be cached.
@@ -370,13 +365,11 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 	/**
 	 * Postpones the expiration time of the cache entry related to the given key.
 	 * <p>
-	 *  If no entry is present for the given key a new one will be created with value {@code null}.
-	 * </p>
+	 * If no entry is present for the given key a new one will be created with value {@code null}.
 	 * <p>
-	 *  Only the first thread calling this method for the given key should be successful,
-	 *  any other thread should fail. This method returns {@code true} if the operation
-	 *  was successful and {@code false} otherwise.
-	 * </p>
+	 * Only the first thread calling this method for the given key should be successful,
+	 * any other thread should fail. This method returns {@code true} if the operation
+	 * was successful and {@code false} otherwise.
 	 * 
 	 * @param key      key to update.
 	 * @param duration number of seconds until expiration.
@@ -387,8 +380,7 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 	/**
 	 * Removes the given key and the related entry from the cache.
 	 * <p>
-	 *  If the key is not present nothing will be done.
-	 * </p> 
+	 * If the key is not present nothing will be done.
 	 * 
 	 * @param key key to be removed.
 	 */

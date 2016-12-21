@@ -29,9 +29,8 @@ import java.util.ResourceBundle;
  * Utility tool for the i18n.
  * 
  * <p>
- *  Provides a simple system to support multi-language
- *  text messages.  
- * </p>
+ * Provides a simple system to support multi-language
+ * text messages.  
  * 
  * @author Nerd4j Team
  */

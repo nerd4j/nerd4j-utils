@@ -36,9 +36,8 @@ import org.slf4j.LoggerFactory;
  * that uses the local memory as cache storage.
  * 
  * <p>
- *  This implementation uses the {@link SpoolingLinkedHashMap}
- *  as cache engine and the local heap memory as storage.
- * </p>
+ * This implementation uses the {@link SpoolingLinkedHashMap}
+ * as cache engine and the local heap memory as storage.
  * 
  * @param <Value> type of values to cache.
  * 

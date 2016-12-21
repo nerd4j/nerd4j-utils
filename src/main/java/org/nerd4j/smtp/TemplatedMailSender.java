@@ -78,8 +78,7 @@ public class TemplatedMailSender extends SimpleMailSender
 	/**
      * Initialization method used to configure the {@code SMTP} session properties.
      * <p>
-     *  This method must be called before any other in this class.
-     * </p>
+     * This method must be called before any other in this class.
      * 
      * @throws MessagingException if the initialization fails.
      */
@@ -123,6 +122,7 @@ public class TemplatedMailSender extends SimpleMailSender
      * @param templateName the name of the template to use.
      * @param model        the related data model.
      * @param locale       the current {@link Locale}.
+     * @param attachments  the attached files.
      * @return a new email {@link Message}.
      * @throws MessagingException if the creation fails.
      */
@@ -166,6 +166,7 @@ public class TemplatedMailSender extends SimpleMailSender
      * @param htmlTemplateName  the name of the template to use (HTML version).
      * @param model             the related data model.
      * @param locale            the current {@link Locale}.
+     * @param attachments  the attached files.
      * @return a new email {@link Message}.
      * @throws MessagingException if the creation fails.
      */

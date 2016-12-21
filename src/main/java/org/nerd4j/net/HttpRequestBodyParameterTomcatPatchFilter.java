@@ -50,25 +50,24 @@ import org.slf4j.LoggerFactory;
  * with method PUT, PATCH or DELETE.
  * 
  * <p>
- *  By default the Tomcat server accepts URL parameters to be sent
- *  into the request body only for requests with method POST.
- * </p> 
+ * By default the Tomcat server accepts URL parameters to be sent
+ * into the request body only for requests with method POST.
+ * 
  * <p>
- *  The W3C specifications allow also requests with method
- *  PUT, PATCH and DELETE to send parameters into the request
- *  body and this option is widely used in ReST environment.
- * </p>
+ * The W3C specifications allow also requests with method
+ * PUT, PATCH and DELETE to send parameters into the request
+ * body and this option is widely used in ReST environment.
+ * 
  * <p>
- *  This {@link Filter} intercepts the requests with method PUT,
- *  PATCH or DELETE and looks for URL encoded parameters into
- *  the request body. If there are any are parsed and added
- *  to the {@link ServletRequest#getParameterMap()}.
- * </p>
+ * This {@link Filter} intercepts the requests with method PUT,
+ * PATCH or DELETE and looks for URL encoded parameters into
+ * the request body. If there are any are parsed and added
+ * to the {@link ServletRequest#getParameterMap()}.
+ * 
  * <p>
- *  To carry URL encoded parameters the request body must
- *  be of type {@code application/x-www-form-urlencoded},
- *  otherwise is ignored.
- * </p>
+ * To carry URL encoded parameters the request body must
+ * be of type {@code application/x-www-form-urlencoded},
+ * otherwise is ignored.
  * 
  * @author Nerd4j Team
  */
@@ -122,10 +121,9 @@ public class HttpRequestBodyParameterTomcatPatchFilter implements Filter
 	 * and if the {@link HttpServletRequest#getMethod()} is one between
 	 * {@code PUT}, {@code PATCH} or {@code DELETE}.
 	 * <p>
-	 *  Checks if the request body content type is {@code application/x-www-form-urlencoded}.
-	 *  In this case parses the request body looking for URL encoded parameters and
-	 *  adds them to the {@link ServletRequest#getParameterMap()}.
-	 * </p>
+	 * Checks if the request body content type is {@code application/x-www-form-urlencoded}.
+	 * In this case parses the request body looking for URL encoded parameters and
+	 * adds them to the {@link ServletRequest#getParameterMap()}.
 	 * 
 	 * @param request  the request to parse.
 	 * @param response the related response.

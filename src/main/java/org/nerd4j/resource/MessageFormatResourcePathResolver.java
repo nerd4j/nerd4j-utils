@@ -28,15 +28,13 @@ import java.text.MessageFormat;
  * based on a {@link MessageFormat} resolver.
  * 
  * <p>
- *  This class handles the case where the path to each resource
- *  can be described using a <code>pattern</code> that can be
- *  construed by a {@link MessageFormat}.
- * </p>
+ * This class handles the case where the path to each resource
+ * can be described using a <code>pattern</code> that can be
+ * construed by a {@link MessageFormat}.
  * 
  * <p>
- *  This class actually contains a {@link MessageFormat} that builds
- *  the path based on the provided arguments.
- * </p>
+ * This class actually contains a {@link MessageFormat} that builds
+ * the path based on the provided arguments.
  * 
  * @param <K> identification key type.
  * 

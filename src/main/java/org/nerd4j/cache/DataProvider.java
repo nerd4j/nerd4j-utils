@@ -27,11 +27,10 @@ package org.nerd4j.cache;
  * Represents a provider able to retrieve the values
  * to cache in relation with the given key.
  * <p>
- *  The assumption behind this interface is that the
- *  given key is able to uniquely identify the related
- *  data and therefore contains all the information 
- *  needed to retrieve it.
- * </p>
+ * The assumption behind this interface is that the
+ * given key is able to uniquely identify the related
+ * data and therefore contains all the information 
+ * needed to retrieve it.
  * 
  * @param <Key>   type of the cache key.
  * @param <Value> type of the related data.

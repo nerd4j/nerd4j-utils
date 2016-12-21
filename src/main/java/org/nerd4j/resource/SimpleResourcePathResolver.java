@@ -25,9 +25,8 @@ package org.nerd4j.resource;
  * Trivial implementation of the {@code ResourcePathResolver} interface.
  * 
  * <p>
- *  This class handles the base case where the key used to identify
- *  the resource is the resource name itself, and the path is fixed.
- * </p>
+ * This class handles the base case where the key used to identify
+ * the resource is the resource name itself, and the path is fixed.
  * 
  * @author Nerd4j Team
  */
@@ -50,7 +49,7 @@ public class SimpleResourcePathResolver extends AbstractResourcePathResolver<Str
 	/**
 	 * Constructor with parameters.
 	 * 
-	 * resourceRootPath common root path
+	 * @param resourceRootPath common root path
 	 */
 	public SimpleResourcePathResolver( String resourceRootPath )
 	{

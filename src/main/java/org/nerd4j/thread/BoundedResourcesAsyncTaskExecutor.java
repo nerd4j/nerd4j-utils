@@ -34,7 +34,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.nerd4j.lang.Couple;
 import org.nerd4j.util.DataConsistency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,50 +43,49 @@ import org.slf4j.LoggerFactory;
  * of a given list of tasks all working on the same resource pool. 
  * 
  * <p>
- *  The basic concept of this class is that the given tasks can be
- *  many and possibly time consuming while the accessed resources
- *  are limited. 
- * </p>
+ * The basic concept of this class is that the given tasks can be
+ * many and possibly time consuming while the accessed resources
+ * are limited.
+ *  
  * <p>
- *  A classical use case is scheduling a list of task where each
- *  one needs to call a remote service through a connection pool. 
- * </p>
+ * A classical use case is scheduling a list of task where each
+ * one needs to call a remote service through a connection pool.
+ *  
  * <p>
- *  This class is initialized with an {@link ExecutorService} and
- *  a positive integer {@code n} representing the number of available
- *  resources.  The  {@link ExecutorService} is used to run
- *  asynchronously the given tasks ensuring that no more than {@code n}
- *  task are executed concurrently.
- * </p>
+ * This class is initialized with an {@link ExecutorService} and
+ * a positive integer {@code n} representing the number of available
+ * resources.  The  {@link ExecutorService} is used to run
+ * asynchronously the given tasks ensuring that no more than {@code n}
+ * task are executed concurrently.
+ * 
  * <p>
- *  When a list of tasks is submitted for execution no other list can
- *  be submitted until each task in the first list has been executed.
- *  The tasks are started in the order in which they are submitted
- *  unless the order is changed by the invocation of the 
- *  {@link #getOrWaitForResult(Callable)} method as described later.
- * </p>
+ * When a list of tasks is submitted for execution no other list can
+ * be submitted until each task in the first list has been executed.
+ * The tasks are started in the order in which they are submitted
+ * unless the order is changed by the invocation of the 
+ * {@link #getOrWaitForResult(Callable)} method as described later.
+ * 
  * <p>
- *  This class provides a method to get or wait for the result of
- *  a given task. The provided {@link Callable} are used as keys in
- *  an internal {@link Map} so they need to implement properly the
- *  methods {@link #hashCode()} and {@link #equals(Object)}.
- *  The result of the executed tasks are kept in the internal {@link Map}
- *  until another list is submitted or until the internal status
- *  is cleaned using the proper {@link #clear()} method. 
- * </p>
+ * This class provides a method to get or wait for the result of
+ * a given task. The provided {@link Callable} are used as keys in
+ * an internal {@link Map} so they need to implement properly the
+ * methods {@link #hashCode()} and {@link #equals(Object)}.
+ * The result of the executed tasks are kept in the internal {@link Map}
+ * until another list is submitted or until the internal status
+ * is cleaned using the proper {@link #clear()} method.
+ *  
  * <p>
- *  The method {@link #getOrWaitForResult(Callable)} returns the same
- *  object returned by the {@link Callable#call()} method. Actually
- *  {@link Callable#call()} is invoked at some point during the
- *  asynchronous execution of the task.
- *  Calling the {@link #getOrWaitForResult(Callable)} method will lead to
- *  three different execution flows:
- *  <ol>
- *   <li>Returns immediately if the related task execution has been completed.</li>
- *   <li>Waits for the task to complete if it is currently executing.</li>
- *   <li>Schedules the task to be the next to be executed and waits until is completed.</li>
- *  </ol>
- * </p>
+ * The method {@link #getOrWaitForResult(Callable)} returns the same
+ * object returned by the {@link Callable#call()} method. Actually
+ * {@link Callable#call()} is invoked at some point during the
+ * asynchronous execution of the task.
+ * Calling the {@link #getOrWaitForResult(Callable)} method will lead to
+ * three different execution flows:
+ * <ol>
+ *  <li>Returns immediately if the related task execution has been completed.</li>
+ *  <li>Waits for the task to complete if it is currently executing.</li>
+ *  <li>Schedules the task to be the next to be executed and waits until is completed.</li>
+ * </ol>
  * 
  * @author Nerd4j Team
  */
@@ -152,12 +150,11 @@ public class BoundedResourcesAsyncTaskExecutor
 	 * resources. The given tasks are executed in the same order
 	 * in which they are provided.
 	 * <p>
-	 *  <b>Note</b> This method expects all the provided tasks to be
-	 *  all different. Internally a {@link Map} is used to keep the
-	 *  results of the executed tasks to if the same task occurs
-	 *  multiple times an {@link IllegalArgumentException} will be
-	 *  thrown. 
-	 * </p>
+	 * <b>Note</b> This method expects all the provided tasks to be
+	 * all different. Internally a {@link Map} is used to keep the
+	 * results of the executed tasks to if the same task occurs
+	 * multiple times an {@link IllegalArgumentException} will be
+	 * thrown. 
 	 * 
 	 * @param tasks list of tasks to be executed.
 	 * @throws IllegalStateException if a previous list of tasks is still executing.
@@ -184,16 +181,19 @@ public class BoundedResourcesAsyncTaskExecutor
 	/**
 	 * Returns the result of the task execution if completed.
 	 * <p>
-	 *  Invoking this method will lead to three different execution flows:
-	 *  <ol>
-	 *   <li>Returns immediately if the related task execution has been completed.</li>
-	 *   <li>Waits for the task to complete if it is currently executing.</li>
-	 *   <li>Schedules the task to be the next to be executed and waits until is completed.</li>
-	 *  </ol>
-	 * </p>
+	 * Invoking this method will lead to three different execution flows:
+	 * <ol>
+	 *  <li>Returns immediately if the related task execution has been completed.</li>
+	 *  <li>Waits for the task to complete if it is currently executing.</li>
+	 *  <li>Schedules the task to be the next to be executed and waits until is completed.</li>
+	 * </ol>
 	 * 
 	 * @param task the task to get the result for.
+	 * @param <R> type of the result. 
 	 * @return the execution result if completed.
+	 * @throws InterruptedException  if the thread is interrupted.
+	 * @throws ExecutionException    if the task execution fails.
+	 * @throws CancellationException if the task execution is cancelled.
 	 */
 	public <R> R getOrWaitForResult( Callable<R> task )
 	throws InterruptedException, ExecutionException, CancellationException
@@ -256,9 +256,8 @@ public class BoundedResourcesAsyncTaskExecutor
 	/**
 	 * Forces the current execution to stop.
 	 * <p>
-	 *  Prevents waiting tasks to be executed
-	 *  but doesn't stop the ones already started.
-	 * </p>
+	 * Prevents waiting tasks to be executed
+	 * but doesn't stop the ones already started.
 	 */
 	public void stopCurrentExecution()
 	{

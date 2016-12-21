@@ -29,14 +29,13 @@ import org.nerd4j.util.HashCoder;
 
 /**
  * Abstract implementation of the {@link CacheKey} interface
- * with a consistent implementatin of {@link #hashCode()},
+ * with a consistent implementation of {@link #hashCode()},
  * {@link #equals(Object)} and {@link #serialize()}.
  * 
  * <p>
- *  A class that extends this abstract implementation
- *  only needs to provide an {@code enum} that contains
- *  the properties involved.
- * </p>
+ * A class that extends this abstract implementation
+ * only needs to provide an {@code enum} that contains
+ * the properties involved.
  * 
  * @param <E> {@code enum} that contains the properties involved.
  * 
@@ -61,9 +60,16 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 	 * Serialized form of the key.
 	 * This implementation of {@link CacheKey} is intended
 	 * to be immutable so the value of the serialized form
-	 * can be stored
+	 * can be stored.
 	 */
 	private transient String serializedForm;
+	
+	/**
+	 * This implementation of {@link CacheKey} is intended
+	 * to be immutable so the value of the hash code can
+	 * be stored.
+	 */
+	private transient int hashCode;
 	
 	
 	/**
@@ -77,6 +83,7 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 		
 		super();
 		
+		this.hashCode = 0;
 		this.serializedForm = null;
 		
 		this.version = version;
@@ -97,7 +104,10 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 	public int hashCode()
 	{
 		
-		return HashCoder.hashCode( 79, version, properties );
+		if( hashCode == 0 )
+			hashCode = HashCoder.hashCode( 79, version, properties );
+		
+		return hashCode;
 		
 	}
 
@@ -155,6 +165,7 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 	 * Returns the property identified by the given {@code enum}.
 	 * 
 	 * @param e identifier of the property.
+	 * @param <V> type of the value. 
 	 * @return value of the property.
 	 */
 	@SuppressWarnings("unchecked")
@@ -172,6 +183,7 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 	 * 
 	 * @param e identifier of the property.
 	 * @param v the value to set.
+	 * @param <V> type of the value. 
 	 */
 	protected <V> void set( E e, V v )
 	{
@@ -192,7 +204,6 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 	 * This is done by putting beside each property
 	 * separated by a colon (:) and followed by the
 	 * name of the class and the model version.
-	 * </p>
 	 *  
 	 * @return a serialized form of the key.
 	 */

@@ -29,11 +29,10 @@ import org.slf4j.LoggerFactory;
  * Dummy implementation of the {@link CacheProvider} interface
  * that implements the design pattern {@code Empty Object}.
  * <p>
- *  It provides a caching system where all insertions
- *  will take no effect and the cache will always be empty.
- * </p>
+ * It provides a caching system where all insertions
+ * will take no effect and the cache will always be empty.
  * 
- * @param <Value> data type to be returned by te cache.
+ * @param <Value> data type to be returned by the cache.
  * 
  * @author Nerd4j Team
  */

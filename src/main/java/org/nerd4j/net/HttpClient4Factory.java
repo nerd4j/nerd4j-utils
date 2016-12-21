@@ -21,7 +21,6 @@
  */
 package org.nerd4j.net;
 
-import org.apache.commons.httpclient.HttpConnectionManager;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.conn.HttpClientConnectionManager;
