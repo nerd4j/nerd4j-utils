@@ -24,12 +24,12 @@ package org.nerd4j.resource;
 import java.text.MessageFormat;
 
 /**
- * Implementation of the <code>ResourcePathResolver</code> interface
+ * Implementation of the {@code ResourcePathResolver} interface
  * based on a {@link MessageFormat} resolver.
  * 
  * <p>
  * This class handles the case where the path to each resource
- * can be described using a <code>pattern</code> that can be
+ * can be described using a {@code pattern} that can be
  * construed by a {@link MessageFormat}.
  * 
  * <p>
@@ -50,7 +50,7 @@ public abstract class MessageFormatResourcePathResolver<K> extends AbstractResou
 	/**
 	 * Constructor with parameters.
 	 * 
-	 * @param pathPattern a <code>pattern</code> that can be
+	 * @param pathPattern a {@code pattern} that can be
 	 *                    construed by a {@link MessageFormat}.
 	 */
 	public MessageFormatResourcePathResolver( String pathPattern )
@@ -66,7 +66,7 @@ public abstract class MessageFormatResourcePathResolver<K> extends AbstractResou
 	/**
 	 * Constructor with parameters.
 	 * 
-	 * @param pathPattern a <code>pattern</code> that can be
+	 * @param pathPattern a {@code pattern} that can be
 	 *                    construed by a {@link MessageFormat}.
 	 * @param resourceRootPath common root path
 	 */

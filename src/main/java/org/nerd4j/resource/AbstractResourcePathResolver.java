@@ -22,7 +22,7 @@
 package org.nerd4j.resource;
 
 /**
- * Common abstract implementation of the <code>ResourcePathResolver</code> interface.
+ * Common abstract implementation of the {@code ResourcePathResolver} interface.
  * 
  * <p>
  * This class represents the base implementation common to all
