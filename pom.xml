@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.nerd4j</groupId>
     <artifactId>nerd4j-base</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0</version>
   </parent>
   
   <modelVersion>4.0.0</modelVersion>
@@ -31,7 +31,7 @@
     <dependency>
       <groupId>org.nerd4j</groupId>
       <artifactId>nerd4j-core</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
+      <version>1.1.0</version>
       <scope>compile</scope>
     </dependency>
 
