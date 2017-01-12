@@ -16,11 +16,11 @@ The classes of this library are divided into several concepts:
 * Time: currently contains just the class `SimpleDateHandler` that provides an easy way to handle with objects of type `java.util.Date`.
 
 
-This library is also available on Maven Central [here] (http://search.maven.org/#artifactdetails|org.nerd4j|nerd4j-utils|1.0.0|jar "Maven Central: nerd4j-utils") and can be used with the following dependecy declaration:
+This library is also available on Maven Central [here] (http://search.maven.org/#artifactdetails|org.nerd4j|nerd4j-utils|1.1.0|jar "Maven Central: nerd4j-utils") and can be used with the following dependecy declaration:
 ```xml
 <dependency>
  <groupId>org.nerd4j</groupId>
  <artifactId>nerd4j-utils</artifactId>
- <version>1.0.0</version>
+ <version>1.1.0</version>
 </dependency>
 ```
