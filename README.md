@@ -4,6 +4,7 @@ This library contains utility classescommon to all nerd4j projects but also gene
 ## Content of this library
 The classes of this library are divided into several concepts:
 
+* Cache: classes and interfaces to uniform access to caching services.
 * Dependency: classes and interfaces to define dependencies and organize them into a dependency tree.
 * I10n: utility classes to handle Locale and multi language support.
 * IO: utility classes to simplify operations on file system.
@@ -16,11 +17,11 @@ The classes of this library are divided into several concepts:
 * Time: currently contains just the class `SimpleDateHandler` that provides an easy way to handle with objects of type `java.util.Date`.
 
 
-This library is also available on Maven Central [here] (http://search.maven.org/#artifactdetails|org.nerd4j|nerd4j-utils|1.1.0|jar "Maven Central: nerd4j-utils") and can be used with the following dependecy declaration:
+This library is also available on Maven Central [here] (http://search.maven.org/#artifactdetails|org.nerd4j|nerd4j-utils|1.1.1|jar "Maven Central: nerd4j-utils") and can be used with the following dependecy declaration:
 ```xml
 <dependency>
  <groupId>org.nerd4j</groupId>
  <artifactId>nerd4j-utils</artifactId>
- <version>1.1.0</version>
+ <version>1.1.1</version>
 </dependency>
 ```
