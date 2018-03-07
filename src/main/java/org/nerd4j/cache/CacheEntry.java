@@ -48,7 +48,7 @@ public class CacheEntry<V> extends AnnotatedFormattedBean
 	
 	/** Unix Timestamp (in seconds) when the entry expires. */
 	@Formatted
-	private int expiration;
+	private long expiration;
 	
 	/** Value of the current cache entry. */
 	@Formatted
@@ -67,16 +67,15 @@ public class CacheEntry<V> extends AnnotatedFormattedBean
 	protected CacheEntry()
 	{
 		
-		super();
-		
-		this.value = null;
-		this.expiration = 0;
+		this( null, 1 );
 		
 	}
 	
 	
 	/**
 	 * Constructor with parameters.
+	 * <p>
+	 * The value can be {@code null}, the duration must be strict positive.
 	 * 
 	 * @param value    value to be cached.
 	 * @param duration duration in seconds before expiration.
@@ -86,11 +85,11 @@ public class CacheEntry<V> extends AnnotatedFormattedBean
 		
 		super();
 		
-		DataConsistency.checkIfTrue( "duration >= 0", duration >= 0 );
+		DataConsistency.checkIfTrue( "duration > 0", duration > 0 );
 		
 		this.value = value;
 		
-		final int now = (int) System.currentTimeMillis() / 1000;
+		final long now = System.currentTimeMillis() / 1000;
 		this.expiration = now + duration;
 		
 	}
@@ -106,14 +105,15 @@ public class CacheEntry<V> extends AnnotatedFormattedBean
 		return value;
 	}
 	
-	public int getExpiration()
+	public long getExpiration()
 	{
 		return expiration;
 	}
 	
 	public boolean hasExpired()
 	{
-		final int now = (int) System.currentTimeMillis() / 1000;
+		
+		final long now = System.currentTimeMillis() / 1000;
 		return expiration < now;
 	}
 	
@@ -122,7 +122,7 @@ public class CacheEntry<V> extends AnnotatedFormattedBean
 	 * 
 	 * @param expiration Unix Timestamp (in seconds) when the entry expires.
 	 */
-	protected void setExpiration( int expiration )
+	protected void setExpiration( long expiration )
 	{
 		this.expiration = expiration;
 	}

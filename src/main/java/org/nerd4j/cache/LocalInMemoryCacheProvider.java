@@ -92,6 +92,37 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 		
 	}
 	
+	/**
+	 * Constructor with parameters.
+	 * 
+	 * @param durationAdjustment the cache duration adjustment.
+	 */
+	public LocalInMemoryCacheProvider( float durationAdjustment )
+	{
+		
+		this( DEFAULT_SIZE, durationAdjustment );
+		
+	}
+	
+	/**
+	 * Constructor with parameters.
+	 * 
+	 * @param size the number of entries the cache is able to store.
+	 */
+	public LocalInMemoryCacheProvider( int size, float durationAdjustment )
+	{
+		
+		super( durationAdjustment );
+		
+		DataConsistency.checkIfTrue( "size >= " + MIN_SIZE, size >= MIN_SIZE );
+		
+		this.lock = new ReentrantReadWriteLock();
+		this.cache = new SpoolingLinkedHashMap<String,CacheEntry<Value>>( size, MIN_SIZE, 0.75f, true );
+		
+		log.info( "Created a new {} with cache size {}", LocalInMemoryCacheProvider.class.getSimpleName(), size );
+		
+	}
+	
 	
 	/* ***************** */
 	/*  EXTENSION HOOKS  */
