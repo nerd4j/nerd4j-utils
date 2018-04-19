@@ -24,9 +24,10 @@ package org.nerd4j.cache;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Supplier;
 
 import org.nerd4j.lang.SpoolingLinkedHashMap;
-import org.nerd4j.util.DataConsistency;
+import org.nerd4j.util.Require;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,7 +84,7 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 		
 		super();
 		
-		DataConsistency.checkIfTrue( "size >= " + MIN_SIZE, size >= MIN_SIZE );
+		Require.toHold( size >= MIN_SIZE, "The cache size must be >= " + MIN_SIZE );
 		
 		this.lock = new ReentrantReadWriteLock();
 		this.cache = new SpoolingLinkedHashMap<String,CacheEntry<Value>>( size, MIN_SIZE, 0.75f, true );
@@ -114,7 +115,7 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 		
 		super( durationAdjustment );
 		
-		DataConsistency.checkIfTrue( "size >= " + MIN_SIZE, size >= MIN_SIZE );
+		Require.toHold( size >= MIN_SIZE, "The cache size must be >= " + MIN_SIZE );
 		
 		this.lock = new ReentrantReadWriteLock();
 		this.cache = new SpoolingLinkedHashMap<String,CacheEntry<Value>>( size, MIN_SIZE, 0.75f, true );
@@ -155,37 +156,6 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 			
 			/* In any case we need to release the read lock. */
 			readLock.unlock();
-			
-		}
-		
-	}
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void put( String key, CacheEntry<Value> entry, int duration )
-	{
-		
-		final Lock writeLock = lock.writeLock();
-		
-		try{
-			
-			/* Before updating the cache we take a write lock. */
-			writeLock.lock();
-			cache.put( key, entry );
-									
-		}catch( Exception ex )
-		{
-			
-			log.error( "Unable to populate cache for key " + key, ex );
-			
-		}finally
-		{
-			
-			/* In any case we need to release the write lock. */
-			writeLock.unlock();
 			
 		}
 		
@@ -233,7 +203,7 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 		}catch( Exception ex )
 		{
 			
-			log.error( "Unable to populate cache for key " + key, ex );
+			log.error( "Unable to touch cache for key " + key, ex );
 			return false;
 			
 		}finally
@@ -244,7 +214,6 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 			
 		}
 		
-		
 	}
 
 
@@ -252,7 +221,60 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	 * {@inheritDoc}
 	 */
 	@Override
+	protected void put( String key, CacheEntry<Value> entry, int duration )
+	{
+		
+		execute(
+			() -> cache.put( key, entry ),
+			() -> "Unable to populate cache for key " + key
+		);
+		
+	}
+
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	protected void remove( String key )
+	{
+		
+		execute(
+			() -> cache.remove( key ),
+			() -> "Unable to remove key " + key
+		);
+		
+	}
+	
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void empty()
+	{
+		
+		execute(
+			() -> cache.clear(),
+			() -> "Unable to empty the cache"
+		);
+		
+	}
+	
+	
+	/* ***************** */
+	/*  PRIVATE METHODS  */
+	/* ***************** */
+	
+	
+	/**
+	 * Executes the given operation ensuring the write lock to be called
+	 * and released and ensuring all errors to be caught and logged.
+	 * 
+	 * @param operation the write operation to execute.
+	 * @param errorMessage the error message supplier to invoke in case of error.
+	 */
+	private void execute( Runnable operation, Supplier<String> errorMessage )
 	{
 		
 		final Lock writeLock = lock.writeLock();
@@ -261,12 +283,18 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 			
 			/* Before updating the cache we take a write lock. */
 			writeLock.lock();
-			cache.remove( key );
+			
+			/* We apply the given write operation. */
+			operation.run();
 									
 		}catch( Exception ex )
 		{
 			
-			log.error( "Unable to remove key " + key, ex );
+			/* 
+			 * In case of error we only log the error because errors
+			 * in the cache should not break the execution. 
+			 */
+			log.error( errorMessage.get(), ex );
 			
 		}finally
 		{
@@ -277,5 +305,5 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 		}
 		
 	}
-
+	
 }

@@ -23,7 +23,7 @@ package org.nerd4j.cache;
 
 import java.util.Random;
 
-import org.nerd4j.util.DataConsistency;
+import org.nerd4j.util.Require;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,8 +93,8 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 		
 		super();
 		
-		DataConsistency.checkIfTrue( "durationAdjustment >= " + MIN_DURATION_ADJUSTMENT, durationAdjustment >= MIN_DURATION_ADJUSTMENT );
-		DataConsistency.checkIfTrue( "durationAdjustment <= " + MAX_DURATION_ADJUSTMENT, durationAdjustment <= MAX_DURATION_ADJUSTMENT );
+		Require.toHold( durationAdjustment >= MIN_DURATION_ADJUSTMENT, () -> "The durationAdjustment must be >= " + MIN_DURATION_ADJUSTMENT );
+		Require.toHold( durationAdjustment <= MAX_DURATION_ADJUSTMENT, () -> "The durationAdjustment must be <= " + MAX_DURATION_ADJUSTMENT );
 		
 		this.durationAdjustment = durationAdjustment;
 		
@@ -122,7 +122,8 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 			 * From the point of view of the system the
 			 * cache must be invisible.
 			 */
-			DataConsistency.checkIfNotNull( "cache key", key );
+			Require.nonNull( key, "The cache key must be not null" );
+			Require.nonEmpty( region, "The cache region must be not empty" );
 
 			final String actualKey = buildActualKey( region, key );
 			return get( actualKey );
@@ -154,8 +155,9 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 			 * From the point of view of the system the
 			 * cache must be invisible.
 			 */
-			DataConsistency.checkIfNotNull( "cache key", key );
-			DataConsistency.checkIfStrictPositive( "duration", duration );
+			Require.toHold( duration > 0, "Duration must be > 0" );
+			Require.nonNull( key, "The cache key must be not null" );
+			Require.nonEmpty( region, "The cache region must be not empty" );
 					
 			final String actualKey = buildActualKey( region, key );
 			final int actualDuration = random( duration );
@@ -200,8 +202,9 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 			 * From the point of view of the system the
 			 * cache must be invisible.
 			 */
-			DataConsistency.checkIfNotNull( "cache key", key );
-			DataConsistency.checkIfStrictPositive( "duration", duration );
+			Require.toHold( duration > 0, "Duration must be > 0" );
+			Require.nonNull( key, "The cache key must be not null" );
+			Require.nonEmpty( region, "The cache region must be not empty" );
 			
 			final String actualKey = buildActualKey( region, key );
 			
@@ -235,7 +238,8 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 			 * From the point of view of the system the
 			 * cache must be invisible.
 			 */
-			DataConsistency.checkIfNotNull( "cache key", key );
+			Require.nonNull( key, "The cache key must be not null" );
+			Require.nonEmpty( region, "The cache region must be not empty" );
 			
 			final String actualKey = buildActualKey( region, key );
 			remove( actualKey );
@@ -323,7 +327,7 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 	protected CacheEntry<Value> getTouched( CacheEntry<Value> entry, int duration )
 	{
 		
-		DataConsistency.checkIfStrictPositive( "duration", duration );
+		Require.toHold( duration > 0, "Duration must be > 0" );
 		
 		final Value value = entry != null ? entry.getValue() : null; 
 		return new CacheEntry<Value>( value, duration );

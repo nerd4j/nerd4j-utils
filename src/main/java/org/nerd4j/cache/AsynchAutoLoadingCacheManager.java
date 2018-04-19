@@ -23,7 +23,7 @@ package org.nerd4j.cache;
 
 import java.util.concurrent.Executor;
 
-import org.nerd4j.util.DataConsistency;
+import org.nerd4j.util.Require;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -124,19 +124,11 @@ public class AsynchAutoLoadingCacheManager<Key extends CacheKey,Value> implement
 		
 		super();
 
-		DataConsistency.checkIfValued( "cache region", cacheRegion );
-		DataConsistency.checkIfNotNull( "cache provider", cacheProvider );
-		DataConsistency.checkIfNotNull( "updates executor", updatesExecutor );
-		
-		DataConsistency.checkIfStrictPositive( "cacheDuration", cacheDuration );
-		DataConsistency.checkIfStrictPositive( "touchDuration", touchDuration );
-		
-		
-		this.cacheRegion     = cacheRegion;
-		this.cacheProvider   = cacheProvider;
-		this.cacheDuration   = cacheDuration;
-		this.touchDuration   = touchDuration;
-		this.updatesExecutor = updatesExecutor;
+		this.cacheRegion     = Require.nonEmpty( cacheRegion, "The cache region is mandatory" );
+		this.cacheProvider   = Require.nonNull( cacheProvider, "The cache provier is mandatory" );
+		this.updatesExecutor = Require.nonNull( updatesExecutor, "The updates executor is mandatory" );
+		this.cacheDuration   = Require.trueFor( cacheDuration, cacheDuration > 0, "The cache duration must be > 0" );
+		this.touchDuration   = Require.trueFor( touchDuration, touchDuration > 0, "The touch duration must be > 0" );
 		
 	}
 	

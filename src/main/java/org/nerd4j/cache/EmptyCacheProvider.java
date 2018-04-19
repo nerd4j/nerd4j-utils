@@ -110,5 +110,17 @@ public class EmptyCacheProvider<Value> implements CacheProvider<Value>
 		log.debug( "Removing key {} from region {} in Empty Cache.", key, region );
 		
 	}
+	
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void empty()
+	{
+		
+		log.debug( "Removing all elements from all regions" );
+		
+	}
 
 }
