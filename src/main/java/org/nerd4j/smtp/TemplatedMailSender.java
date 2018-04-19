@@ -28,7 +28,7 @@ import java.util.Map;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 
-import org.nerd4j.util.DataConsistency;
+import org.nerd4j.util.Require;
 
 import freemarker.template.Configuration;
 
@@ -134,9 +134,9 @@ public class TemplatedMailSender extends SimpleMailSender
     	String body;
 		try{
 			
-			DataConsistency.checkIfNotNull( "model", model );
-			DataConsistency.checkIfNotNull( "locale", locale );
-			DataConsistency.checkIfValued( "template name", templateName );
+			Require.nonNull( model, "Model must be not null" );
+			Require.nonNull( locale, "Locale must be not null" );
+			Require.nonEmpty( templateName, "Template name must be not empty" );
 			
 			body = FreemarkerUtil.renderTemplate( configuration, templateName, model, locale );
 			return create( subject, body, attachments );
@@ -179,10 +179,10 @@ public class TemplatedMailSender extends SimpleMailSender
 			
 			String plain, html;
 			
-			DataConsistency.checkIfNotNull( "model", model );
-			DataConsistency.checkIfNotNull( "locale", locale );
-			DataConsistency.checkIfValued( "plain template name", plainTemplateName );
-			DataConsistency.checkIfValued( "html template name", htmlTemplateName );
+			Require.nonNull( model, "Model must be not null" );
+			Require.nonNull( locale, "Locale must be not null" );
+			Require.nonEmpty( htmlTemplateName, "Html template name must be not empty" );
+			Require.nonEmpty( plainTemplateName, "Plain template name must be not empty" );
 			
 			plain = FreemarkerUtil.renderTemplate( configuration, plainTemplateName, model, locale );
 			html = FreemarkerUtil.renderTemplate( configuration, htmlTemplateName, model, locale );

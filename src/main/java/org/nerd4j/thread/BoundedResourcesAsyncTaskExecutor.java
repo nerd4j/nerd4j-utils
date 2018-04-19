@@ -34,7 +34,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.nerd4j.util.DataConsistency;
+import org.nerd4j.util.Require;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -131,11 +131,11 @@ public class BoundedResourcesAsyncTaskExecutor
 		
 		super();
 		
-		DataConsistency.checkIfNotNull( "executor service", executorService );
-		DataConsistency.checkIfStrictPositive( "resource limit", resourceLimit);
 		
+		Require.toHold( resourceLimit > 0, "Resource limit must be > 0" );
+		
+		this.executorService  = Require.nonNull( executorService, "Executor service must be not null" );;
 		this.taskQueueHandler = null;
-		this.executorService  = executorService;
 		
 		this.startNextSemaphore = new Semaphore( 1 );
 		this.resourceSemaphore = new Semaphore( resourceLimit );
@@ -337,7 +337,7 @@ public class BoundedResourcesAsyncTaskExecutor
 			
 			super();
 			
-			DataConsistency.checkIfValued( "task list", taskList );
+			Require.nonEmpty( taskList, "Task list must be not empty" );
 			
 			this.stopped = new AtomicBoolean();
 			this.taskQueue = new LinkedList<Callable<?>>();
@@ -346,7 +346,7 @@ public class BoundedResourcesAsyncTaskExecutor
 			for( Callable<?> task : taskList )
 			{
 				
-				DataConsistency.checkIfNotNull( "task", task );
+				Require.nonNull( task, "Task must be not null" );
 				
 				if( executionMap.containsKey(task) )
 				{
@@ -569,8 +569,8 @@ public class BoundedResourcesAsyncTaskExecutor
 			
 			super();
 			
-			DataConsistency.checkIfNotNull( "task", task );
-			DataConsistency.checkIfNotNull( "stopped", stopped );
+			Require.nonNull( stopped );
+			Require.nonNull( task, "Task must be not null" );
 			
 			this.task = task;
 			this.stopped = stopped;

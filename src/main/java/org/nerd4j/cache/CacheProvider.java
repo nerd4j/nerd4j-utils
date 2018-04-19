@@ -126,5 +126,12 @@ public interface CacheProvider<Value>
 	 */
 	public void remove( String region, CacheKey key );
 	
+	/**
+	 * Removes all elements from all cache regions.
+	 * <p>
+	 * This method will empty the underlying cache.
+	 * 
+	 */
+	public void empty();
 
 }

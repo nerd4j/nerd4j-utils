@@ -23,9 +23,9 @@ package org.nerd4j.cache;
 
 import org.nerd4j.format.AnnotatedFormattedBean;
 import org.nerd4j.format.Formatted;
-import org.nerd4j.util.DataConsistency;
 import org.nerd4j.util.EqualsUtils;
 import org.nerd4j.util.HashCoder;
+import org.nerd4j.util.Require;
 
 
 /**
@@ -85,7 +85,7 @@ public class CacheEntry<V> extends AnnotatedFormattedBean
 		
 		super();
 		
-		DataConsistency.checkIfTrue( "duration > 0", duration > 0 );
+		Require.toHold( duration > 0, "The duration must be strict positive" );
 		
 		this.value = value;
 		
