@@ -95,7 +95,7 @@ public class BoundedResourcesAsyncTaskExecutor
 	/** Internal logging system. */
 	private static final Logger log = LoggerFactory.getLogger( BoundedResourcesAsyncTaskExecutor.class );
 	
-	
+		
 	/** Executor service to use for asynchronous executions. */
 	private final ExecutorService executorService;
 	
@@ -171,7 +171,7 @@ public class BoundedResourcesAsyncTaskExecutor
 		if( isRunning() ) throw new IllegalStateException( "Current execution is still running." );
 		
 		final TaskQueueHandler newHandler = new TaskQueueHandler( tasks );
-		executorService.execute( newHandler );
+		newHandler.start();
 		
 		this.taskQueueHandler = newHandler;
 		
@@ -262,7 +262,7 @@ public class BoundedResourcesAsyncTaskExecutor
 	public void stopCurrentExecution()
 	{
 		
-		getCurrentQueueHandler().stop();
+		getCurrentQueueHandler().stopCurrentExecution();
 		
 	}
 
@@ -274,6 +274,9 @@ public class BoundedResourcesAsyncTaskExecutor
 	 */
 	public void clear()
 	{
+		
+		if( isRunning() )
+			throw new IllegalStateException( "The execution is still running cannot be cleared." );
 		
 		this.taskQueueHandler = null;
 		
@@ -311,13 +314,18 @@ public class BoundedResourcesAsyncTaskExecutor
 	
 	/**
 	 * Internal forker used to schedule task executions.
+	 * <p>
+	 * Initially this was a {@link Runnable} and was executed
+	 * in the {@link ExecutorService}. But if the {@link ExecutorService}
+	 * has {@code maxPoolSize == 1} this task keeps the only available
+	 * thread busy and we get a deadlock. 
 	 * 
 	 * @author Nerd4j Team
 	 */
-	private class TaskQueueHandler implements Runnable
+	private class TaskQueueHandler extends Thread
 	{
 		
-		/** Indica se il task è terminato o è stato stoppato. */
+		/** Tells if the task is completed or has been stopped. */
 		private final AtomicBoolean stopped;
 		
 		/** Map that associates each task to the related execution. */
@@ -469,7 +477,7 @@ public class BoundedResourcesAsyncTaskExecutor
 		 * However this method doesn't affect the currently
 		 * executed tasks.
 		 */
-		public void stop()
+		public void stopCurrentExecution()
 		{
 			
 			stopped.set( true );
