@@ -109,6 +109,7 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	 * Constructor with parameters.
 	 * 
 	 * @param size the number of entries the cache is able to store.
+	 * @param durationAdjustment the cache duration adjustment.
 	 */
 	public LocalInMemoryCacheProvider( int size, float durationAdjustment )
 	{
