@@ -115,7 +115,7 @@ public class SingletonCacheKey implements CacheKey
 		final SingletonCacheKey other = EqualsUtils.castIfSameClass( obj, SingletonCacheKey.class );
 		if( other == null ) return false;		
 		
-		return EqualsUtils.deepEqualsFields( this.version,    other.version ); 
+		return this.version == other.version; 
 		
 	}
 
@@ -128,7 +128,7 @@ public class SingletonCacheKey implements CacheKey
 	{
 	
 		if( serializedForm == null )
-			serializedForm = buildStringKey();
+			serializedForm = "SingletonCacheKey-v" + version;
 		
 		return serializedForm;
 		
@@ -142,34 +142,6 @@ public class SingletonCacheKey implements CacheKey
 	{
 		
 		return serialize();
-		
-	}
-
-	
-	/* ***************** */
-	/*  PRIVATE METHODS  */
-	/* ***************** */
-	
-	
-	/**
-	 * Builds the serialized form of the key.
-	 * <p>
-	 * This is done by putting beside each property
-	 * separated by a colon (:) and followed by the
-	 * name of the class and the model version.
-	 *  
-	 * @return a serialized form of the key.
-	 */
-	private String buildStringKey()
-	{
-		
-		final String className = getClass().getSimpleName();
-		final StringBuilder sb = new StringBuilder( 100 );		
-		sb.append( className )
-		  .append( "-v" )
-		  .append( version );
-		
-		return sb.toString();		
 		
 	}
 	
