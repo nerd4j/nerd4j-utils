@@ -56,6 +56,7 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	/** Default number of entries the cache is able to store. */
 	private static final int DEFAULT_SIZE = 128;
 	
+	
 	/** Lock to use to serialize write operations. */
 	private final ReadWriteLock lock;
 	
@@ -82,14 +83,7 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	public LocalInMemoryCacheProvider( int size )
 	{
 		
-		super();
-		
-		Require.toHold( size >= MIN_SIZE, "The cache size must be >= " + MIN_SIZE );
-		
-		this.lock = new ReentrantReadWriteLock();
-		this.cache = new SpoolingLinkedHashMap<String,CacheEntry<Value>>( size, MIN_SIZE, 0.75f, true );
-		
-		log.info( "Created a new {} with cache size {}", LocalInMemoryCacheProvider.class.getSimpleName(), size );
+		this( size, DEFAULT_DURATION_ADJUSTMENT );
 		
 	}
 	
@@ -266,7 +260,7 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	/* ***************** */
 	/*  PRIVATE METHODS  */
 	/* ***************** */
-	
+
 	
 	/**
 	 * Executes the given operation ensuring the write lock to be called

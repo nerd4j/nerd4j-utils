@@ -54,13 +54,13 @@ public abstract class AbstractCacheProvider<Value> implements CacheProvider<Valu
 	private static final Random RANDOM = new Random();
 	
 	/** Maximum cache duration adjustment. */
-	private static final float MAX_DURATION_ADJUSTMENT = 0.5f;
+	static final float MAX_DURATION_ADJUSTMENT = 0.5f;
 	
 	/** Minimum cache duration adjustment. */
-	private static final float MIN_DURATION_ADJUSTMENT = 0f;
+	static final float MIN_DURATION_ADJUSTMENT = 0f;
 		
 	/** Default cache duration adjustment. */
-	private static final float DEFAULT_DURATION_ADJUSTMENT = 0.25f;
+	static final float DEFAULT_DURATION_ADJUSTMENT = 0.25f;
 	
 	
 	/** Cache duration adjustment. */
