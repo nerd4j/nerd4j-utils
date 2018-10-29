@@ -21,9 +21,6 @@
  */
 package org.nerd4j.cache;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Supplier;
 
 import org.nerd4j.lang.SpoolingLinkedHashMap;
@@ -57,8 +54,8 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	private static final int DEFAULT_SIZE = 128;
 	
 	
-	/** Lock to use to serialize write operations. */
-	private final ReadWriteLock lock;
+//	/** Lock to use to serialize write operations. */
+//	private final ReadWriteLock lock;
 	
 	/** The cache engine, performs space occupation and eviction strategies. */
     private final SpoolingLinkedHashMap<String,CacheEntry<Value>> cache;
@@ -112,10 +109,28 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 		
 		Require.toHold( size >= MIN_SIZE, "The cache size must be >= " + MIN_SIZE );
 		
-		this.lock = new ReentrantReadWriteLock();
+//		this.lock = new ReentrantReadWriteLock();
 		this.cache = new SpoolingLinkedHashMap<String,CacheEntry<Value>>( size, MIN_SIZE, 0.75f, true );
 		
 		log.info( "Created a new {} with cache size {}", LocalInMemoryCacheProvider.class.getSimpleName(), size );
+		
+	}
+	
+	
+	/* **************** */
+	/*  PUBLIC METHODS  */
+	/* **************** */
+	
+	
+	/**
+	 * Returns the size of the internal {@link SpoolingLinkedHashMap}.
+	 * 
+	 * @return the size of the internal {@link SpoolingLinkedHashMap}.
+	 */
+	public synchronized int size()
+	{
+		
+		return cache.size();
 		
 	}
 	
@@ -129,16 +144,17 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected CacheEntry<Value> get( String key )
+	protected synchronized CacheEntry<Value> get( String key )
 	{
 		
-		final Lock readLock = lock.readLock();
+//		final Lock readLock = lock.readLock();
 		
 		try{
         
 			/* Before reading the cache we take a read lock. */
-			readLock.lock();
-			return cache.get( key );
+//			readLock.lock();
+				
+			return cache.get( key );				
 			
 		}catch( Exception ex )
 		{
@@ -146,11 +162,11 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 			log.error( "Unable to read cache for key " + key, ex );
 			return null;
 			
-		}finally
-		{
-			
-			/* In any case we need to release the read lock. */
-			readLock.unlock();
+//		}finally
+//		{
+//			
+//			/* In any case we need to release the read lock. */
+//			readLock.unlock();
 			
 		}
 		
@@ -161,15 +177,15 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected boolean touch( String key, int duration )
+	protected synchronized boolean touch( String key, int duration )
 	{
 		
-		final Lock writeLock = lock.writeLock();
+//		final Lock writeLock = lock.writeLock();
 		
 		try{
 			
 			/* Before updating the cache we take a write lock. */
-			writeLock.lock();
+//			writeLock.lock();
 						 
 			
 			/*
@@ -193,6 +209,7 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 			 */
 			final CacheEntry<Value> touchedEntry = getTouched( currentEntry, duration );
 			cache.put( key, touchedEntry );
+			
 			return true;
 									
 		}catch( Exception ex )
@@ -201,11 +218,11 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 			log.error( "Unable to touch cache for key " + key, ex );
 			return false;
 			
-		}finally
-		{
-			
-			/* In any case we need to release the write lock. */
-			writeLock.unlock();
+//		}finally
+//		{
+//			
+//			/* In any case we need to release the write lock. */
+//			writeLock.unlock();
 			
 		}
 		
@@ -269,15 +286,15 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	 * @param operation the write operation to execute.
 	 * @param errorMessage the error message supplier to invoke in case of error.
 	 */
-	private void execute( Runnable operation, Supplier<String> errorMessage )
+	private synchronized void execute( Runnable operation, Supplier<String> errorMessage )
 	{
 		
-		final Lock writeLock = lock.writeLock();
+//		final Lock writeLock = lock.writeLock();
 		
 		try{
 			
 			/* Before updating the cache we take a write lock. */
-			writeLock.lock();
+//			writeLock.lock();
 			
 			/* We apply the given write operation. */
 			operation.run();
@@ -291,11 +308,11 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 			 */
 			log.error( errorMessage.get(), ex );
 			
-		}finally
-		{
-			
-			/* In any case we need to release the write lock. */
-			writeLock.unlock();
+//		}finally
+//		{
+//			
+//			/* In any case we need to release the write lock. */
+//			writeLock.unlock();
 			
 		}
 		
