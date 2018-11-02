@@ -21,10 +21,9 @@
  */
 package org.nerd4j.cache;
 
-import java.util.function.Supplier;
+import java.util.concurrent.locks.ReadWriteLock;
 
 import org.nerd4j.lang.SpoolingLinkedHashMap;
-import org.nerd4j.util.Require;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +35,17 @@ import org.slf4j.LoggerFactory;
  * <p>
  * This implementation uses the {@link SpoolingLinkedHashMap}
  * as cache engine and the local heap memory as storage.
+ * 
+ * <p>
+ * This class was first implemented using {@link ReadWriteLock}
+ * but benchmarks showed that, in this case, synchronization is
+ * 6 times faster because the overhead of acquiring the lock is
+ * dominant related to the time requested by read/write operations.
+ * 
+ * <p>
+ * So, even if {@link ReadWriteLock}s allow concurrent reads, the time to
+ * acquire the lock is greater than the time spent to perform a synchronized read.
+ * 
  * 
  * @param <Value> type of values to cache.
  * 
@@ -53,9 +63,6 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	/** Default number of entries the cache is able to store. */
 	private static final int DEFAULT_SIZE = 128;
 	
-	
-//	/** Lock to use to serialize write operations. */
-//	private final ReadWriteLock lock;
 	
 	/** The cache engine, performs space occupation and eviction strategies. */
     private final SpoolingLinkedHashMap<String,CacheEntry<Value>> cache;
@@ -107,10 +114,9 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 		
 		super( durationAdjustment );
 		
-		Require.toHold( size >= MIN_SIZE, "The cache size must be >= " + MIN_SIZE );
+		final int maxCapacity = size >= MIN_SIZE ? size : MIN_SIZE;
 		
-//		this.lock = new ReentrantReadWriteLock();
-		this.cache = new SpoolingLinkedHashMap<String,CacheEntry<Value>>( size, MIN_SIZE, 0.75f, true );
+		this.cache = new SpoolingLinkedHashMap<String,CacheEntry<Value>>( maxCapacity, MIN_SIZE, 0.75f, true );
 		
 		log.info( "Created a new {} with cache size {}", LocalInMemoryCacheProvider.class.getSimpleName(), size );
 		
@@ -135,6 +141,27 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	}
 	
 	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public synchronized void empty()
+	{
+		
+		try{
+			
+			cache.clear();
+									
+		}catch( Exception ex )
+		{
+			
+			log.error( "Unable to empty the cache", ex );
+			
+		}
+		
+	}
+	
+	
 	/* ***************** */
 	/*  EXTENSION HOOKS  */
 	/* ***************** */
@@ -147,13 +174,8 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	protected synchronized CacheEntry<Value> get( String key )
 	{
 		
-//		final Lock readLock = lock.readLock();
-		
 		try{
         
-			/* Before reading the cache we take a read lock. */
-//			readLock.lock();
-				
 			return cache.get( key );				
 			
 		}catch( Exception ex )
@@ -161,12 +183,6 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 			
 			log.error( "Unable to read cache for key " + key, ex );
 			return null;
-			
-//		}finally
-//		{
-//			
-//			/* In any case we need to release the read lock. */
-//			readLock.unlock();
 			
 		}
 		
@@ -177,16 +193,10 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected synchronized boolean touch( String key, int duration )
+	protected boolean touch( String key, int duration )
 	{
 		
-//		final Lock writeLock = lock.writeLock();
-		
 		try{
-			
-			/* Before updating the cache we take a write lock. */
-//			writeLock.lock();
-						 
 			
 			/*
 			 * By contract this method should be called when
@@ -196,7 +206,7 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 			 * 2. the entry has been "touched" by another thread short before.
 			 * In both cases the operation fails.
 			 */
-			final CacheEntry<Value> currentEntry = cache.get( key );
+			final CacheEntry<Value> currentEntry = get( key );
 			if( currentEntry != null && ! currentEntry.hasExpired() )
 			{
 				log.trace( "Entry for key {} has been already touched.", key );
@@ -208,7 +218,7 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 			 * will be replaced by an updated one.
 			 */
 			final CacheEntry<Value> touchedEntry = getTouched( currentEntry, duration );
-			cache.put( key, touchedEntry );
+			put( key, touchedEntry, duration );
 			
 			return true;
 									
@@ -217,12 +227,6 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 			
 			log.error( "Unable to touch cache for key " + key, ex );
 			return false;
-			
-//		}finally
-//		{
-//			
-//			/* In any case we need to release the write lock. */
-//			writeLock.unlock();
 			
 		}
 		
@@ -233,86 +237,38 @@ public class LocalInMemoryCacheProvider<Value> extends AbstractCacheProvider<Val
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void put( String key, CacheEntry<Value> entry, int duration )
+	protected synchronized void put( String key, CacheEntry<Value> entry, int duration )
 	{
-		
-		execute(
-			() -> cache.put( key, entry ),
-			() -> "Unable to populate cache for key " + key
-		);
-		
-	}
-
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void remove( String key )
-	{
-		
-		execute(
-			() -> cache.remove( key ),
-			() -> "Unable to remove key " + key
-		);
-		
-	}
-	
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void empty()
-	{
-		
-		execute(
-			() -> cache.clear(),
-			() -> "Unable to empty the cache"
-		);
-		
-	}
-	
-	
-	/* ***************** */
-	/*  PRIVATE METHODS  */
-	/* ***************** */
-
-	
-	/**
-	 * Executes the given operation ensuring the write lock to be called
-	 * and released and ensuring all errors to be caught and logged.
-	 * 
-	 * @param operation the write operation to execute.
-	 * @param errorMessage the error message supplier to invoke in case of error.
-	 */
-	private synchronized void execute( Runnable operation, Supplier<String> errorMessage )
-	{
-		
-//		final Lock writeLock = lock.writeLock();
 		
 		try{
 			
-			/* Before updating the cache we take a write lock. */
-//			writeLock.lock();
-			
-			/* We apply the given write operation. */
-			operation.run();
+			cache.put( key, entry );
 									
 		}catch( Exception ex )
 		{
 			
-			/* 
-			 * In case of error we only log the error because errors
-			 * in the cache should not break the execution. 
-			 */
-			log.error( errorMessage.get(), ex );
+			log.error( "Unable to populate cache for key " + key, ex );
 			
-//		}finally
-//		{
-//			
-//			/* In any case we need to release the write lock. */
-//			writeLock.unlock();
+		}
+		
+	}
+
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected synchronized void remove( String key )
+	{
+		
+		try{
+			
+			cache.remove( key );
+									
+		}catch( Exception ex )
+		{
+			
+			log.error( "Unable to remove key " + key, ex );
 			
 		}
 		
