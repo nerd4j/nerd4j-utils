@@ -24,6 +24,7 @@ package org.nerd4j.cache;
 import org.nerd4j.util.CommandIterator;
 import org.nerd4j.util.EqualsUtils;
 import org.nerd4j.util.HashCoder;
+import org.nerd4j.util.Require;
 
 
 
@@ -55,6 +56,15 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 	 * to a cache miss and the data will be updated.
 	 */
 	private final int version;
+		
+	/**
+	 * The name of the cache key values space.
+	 * This is useful since you may need to add key spaces
+	 * with the same value ranges to the same cache region.
+	 * Giving a different name to each space will avoid
+	 * key conflicts.
+	 */
+	private final String name;
 	
 	/**
 	 * Serialized form of the key.
@@ -74,6 +84,9 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 	
 	/**
 	 * Constructor with parameters.
+	 * <p>
+	 * Use the cache key implementation class name
+	 * as the space name for the values of this key.
 	 * 
 	 * @param enumClass class that enumerates the key properties.
 	 * @param version   version of the data model related to the key.
@@ -86,7 +99,30 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 		this.hashCode = 0;
 		this.serializedForm = null;
 		
-		this.version = version;
+		this.name       = getClass().getSimpleName();
+		this.version    = version;
+		this.properties = new Object[enumClass.getEnumConstants().length];
+		
+	}
+	
+	
+	/**
+	 * Constructor with parameters.
+	 * 
+	 * @param name      name of the cache key space.
+	 * @param enumClass class that enumerates the key properties.
+	 * @param version   version of the data model related to the key.
+	 */
+	public AbstractCacheKey( String name, Class<E> enumClass, int version )
+	{
+		
+		super();
+		
+		this.hashCode = 0;
+		this.serializedForm = null;
+		
+		this.name       = Require.nonEmpty( name, "The name of the key values space is mandatory" );
+		this.version    = version;
 		this.properties = new Object[enumClass.getEnumConstants().length];
 		
 	}
@@ -105,7 +141,7 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 	{
 		
 		if( hashCode == 0 )
-			hashCode = HashCoder.hashCode( 79, version, properties );
+			hashCode = HashCoder.hashCode( 79, version, name, properties );
 		
 		return hashCode;
 		
@@ -126,6 +162,7 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 		
 		return EqualsUtils.deepEqualsFields( this, other,
 											 key -> key.version,
+											 key -> key.name,
 											 key -> key.properties );
 		
 	}
@@ -276,12 +313,12 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 	private void addTail( StringBuilder sb )
 	{
 		
-		final String className = getClass().getSimpleName();
 		if( sb.length() > 0 )
 			sb.append( "-" );
 		
-		sb.append( className )
-		  .append( "-v" ).append( version );
+		sb.append( name )
+		  .append( "-v" )
+		  .append( version );
 		
 	}
 	

@@ -23,6 +23,7 @@ package org.nerd4j.cache;
 
 import org.nerd4j.util.EqualsUtils;
 import org.nerd4j.util.HashCoder;
+import org.nerd4j.util.Require;
 
 
 
@@ -50,6 +51,15 @@ public class SingletonCacheKey implements CacheKey
 	private final int version;
 	
 	/**
+	 * The name of the singleton element to cache.
+	 * This is useful since you may need to add different
+	 * singleton values to the same cache region.
+	 * Giving a different name to each value will avoid
+	 * key conflicts.
+	 */
+	private final String name;
+	
+	/**
 	 * Serialized form of the key.
 	 * This implementation of {@link CacheKey} is intended
 	 * to be immutable so the value of the serialized form
@@ -68,9 +78,10 @@ public class SingletonCacheKey implements CacheKey
 	/**
 	 * Constructor with parameters.
 	 * 
-	 * @param version   version of the data model related to the key.
+	 * @param name    the name of the singleton element to cache.
+	 * @param version version of the data model related to the key.
 	 */
-	public SingletonCacheKey( int version )
+	public SingletonCacheKey( String name, int version )
 	{
 		
 		super();
@@ -78,6 +89,7 @@ public class SingletonCacheKey implements CacheKey
 		this.hashCode = 0;
 		this.serializedForm = null;
 		
+		this.name    = Require.nonEmpty( name, "The name of the singleton value is mandatory" );
 		this.version = version;
 		
 	}
@@ -96,7 +108,7 @@ public class SingletonCacheKey implements CacheKey
 	{
 		
 		if( hashCode == 0 )
-			hashCode = HashCoder.hashCode( 79, version );
+			hashCode = HashCoder.hashCode( 79, version, name );
 		
 		return hashCode;
 		
@@ -115,7 +127,9 @@ public class SingletonCacheKey implements CacheKey
 		final SingletonCacheKey other = EqualsUtils.castIfSameClass( this, obj );
 		if( other == null ) return false;		
 		
-		return this.version == other.version; 
+		return EqualsUtils.equalsFields( this, other,
+										 key -> key.version,
+										 key -> key.name ); 
 		
 	}
 
@@ -128,7 +142,7 @@ public class SingletonCacheKey implements CacheKey
 	{
 	
 		if( serializedForm == null )
-			serializedForm = "SingletonCacheKey-v" + version;
+			serializedForm = name + "-v" + version;
 		
 		return serializedForm;
 		

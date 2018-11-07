@@ -23,6 +23,7 @@ package org.nerd4j.cache;
 
 import org.nerd4j.util.EqualsUtils;
 import org.nerd4j.util.HashCoder;
+import org.nerd4j.util.Require;
 
 
 
@@ -57,6 +58,15 @@ public class MonoCacheKey<Value> implements CacheKey
 	private final Value value;
 	
 	/**
+	 * The name of the dimension where the value belongs.
+	 * This is useful since you may need to add dimensions
+	 * with the same value range to the same cache region.
+	 * Giving a different name to each dimension will avoid
+	 * key conflicts.
+	 */
+	private final String name;
+	
+	/**
 	 * Serialized form of the key.
 	 * This implementation of {@link CacheKey} is intended
 	 * to be immutable so the value of the serialized form
@@ -76,9 +86,10 @@ public class MonoCacheKey<Value> implements CacheKey
 	 * Constructor with parameters.
 	 * 
 	 * @param value     the value used to set the key.
+	 * @param name      the name of the dimension where the value belongs.
 	 * @param version   version of the data model related to the key.
 	 */
-	public MonoCacheKey( Value value, int version )
+	public MonoCacheKey( Value value, String name, int version )
 	{
 		
 		super();
@@ -86,11 +97,12 @@ public class MonoCacheKey<Value> implements CacheKey
 		this.hashCode = 0;
 		this.serializedForm = null;
 		
+		this.name    = Require.nonEmpty( name, "The dimension name is mandatory" );
 		this.value   = value;
 		this.version = version;
 		
 	}
-	
+
 	
 	/* ******************* */
 	/*  INTERFACE METHODS  */
@@ -105,7 +117,7 @@ public class MonoCacheKey<Value> implements CacheKey
 	{
 		
 		if( hashCode == 0 )
-			hashCode = HashCoder.hashCode( 79, value, version );
+			hashCode = HashCoder.hashCode( 79, value, version, name );
 		
 		return hashCode;
 		
@@ -125,8 +137,9 @@ public class MonoCacheKey<Value> implements CacheKey
 		if( other == null ) return false;		
 		
 		return EqualsUtils.deepEqualsFields( this, other,
-										 	 key -> key.value,
-										 	 key -> key.version ); 
+											 key -> key.value,
+											 key -> key.version, 
+											 key -> key.name );
 		
 	}
 
@@ -139,7 +152,7 @@ public class MonoCacheKey<Value> implements CacheKey
 	{
 	
 		if( serializedForm == null )
-			serializedForm = value + "-MonoCacheKey-v" + version;
+			serializedForm = buildStringKey();
 		
 		return serializedForm;
 		
@@ -153,6 +166,37 @@ public class MonoCacheKey<Value> implements CacheKey
 	{
 		
 		return serialize();
+		
+	}
+	
+	
+	/* ***************** */
+	/*  PRIVATE METHODS  */
+	/* ***************** */
+	
+	
+	/**
+	 * Builds the serialized form of the key.
+	 * <p>
+	 * This is done by putting beside each property
+	 * separated by a colon (:) and followed by the
+	 * name of the class and the model version.
+	 *  
+	 * @return a serialized form of the key.
+	 */
+	private String buildStringKey()
+	{
+		
+		final StringBuilder sb = new StringBuilder( 100 );
+		if( value != null )
+			sb.append( value )
+			  .append( '-' );
+		
+		sb.append( name )
+		  .append( "-v" )
+		  .append( version );
+		
+		return sb.toString();		
 		
 	}
 	
