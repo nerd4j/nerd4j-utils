@@ -121,11 +121,12 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 		
 		if( this == obj ) return true;
 		
-		final AbstractCacheKey<?> other = EqualsUtils.castIfSameClass( obj, AbstractCacheKey.class );
+		final AbstractCacheKey<?> other = EqualsUtils.castIfSameClass( this, obj );
 		if( other == null ) return false;		
 		
-		return EqualsUtils.deepEqualsFields( this.version,    other.version,
-			                                 this.properties, other.properties ); 
+		return EqualsUtils.deepEqualsFields( this, other,
+											 key -> key.version,
+											 key -> key.properties );
 		
 	}
 
@@ -276,6 +277,9 @@ public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 	{
 		
 		final String className = getClass().getSimpleName();
+		if( sb.length() > 0 )
+			sb.append( "-" );
+		
 		sb.append( className )
 		  .append( "-v" ).append( version );
 		

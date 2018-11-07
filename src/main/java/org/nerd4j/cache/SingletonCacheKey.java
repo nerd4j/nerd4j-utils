@@ -112,7 +112,7 @@ public class SingletonCacheKey implements CacheKey
 		
 		if( this == obj ) return true;
 		
-		final SingletonCacheKey other = EqualsUtils.castIfSameClass( obj, SingletonCacheKey.class );
+		final SingletonCacheKey other = EqualsUtils.castIfSameClass( this, obj );
 		if( other == null ) return false;		
 		
 		return this.version == other.version; 

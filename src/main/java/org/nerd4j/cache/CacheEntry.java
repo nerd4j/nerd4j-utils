@@ -162,11 +162,12 @@ public class CacheEntry<V> extends AnnotatedFormattedBean
 	{
 		
 		if( this == obj ) return true;
-		final CacheEntry<?> other = EqualsUtils.castIfSameClass( obj, CacheEntry.class );
+		final CacheEntry<?> other = EqualsUtils.castIfSameClass( this, obj );
 		if( other == null ) return false;
 		
-		return EqualsUtils.deepEqualsFields( this.expiration, other.expiration,
-				                             this.value, other.value );
+		return EqualsUtils.deepEqualsFields( this, other, 
+											 entry -> entry.expiration,
+				                             entry -> entry.value );
 		
 	}	
 	
