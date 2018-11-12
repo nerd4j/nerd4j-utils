@@ -41,7 +41,9 @@ import org.nerd4j.util.Require;
  * @param <E> {@code enum} that contains the properties involved.
  * 
  * @author Nerd4j Team
+ * @deprecated use {@link SimpleCacheKey} instead.
  */
+@Deprecated
 public abstract class AbstractCacheKey<E extends Enum<E>> implements CacheKey
 {
 	

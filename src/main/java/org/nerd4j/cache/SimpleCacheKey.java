@@ -23,8 +23,9 @@ package org.nerd4j.cache;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Consumer;
 
-import org.nerd4j.util.CommandIterator;
+import org.nerd4j.lang.ArrayIterator;
 import org.nerd4j.util.EqualsUtils;
 import org.nerd4j.util.HashCoder;
 import org.nerd4j.util.Require;
@@ -45,6 +46,15 @@ import org.nerd4j.util.Require;
  * <p>
  * This implementation uses an internal array to store the
  * values that compose the key.
+ * 
+ * <p>
+ * For make it easier to build keys from data this class provides
+ * a {@link Builder} that can be configured with name and version
+ * and creates keys based on the given values.
+ * 
+ * <p>
+ * The builder is thread safe and can be stored as static object.
+ *
  * 
  * @author Nerd4j Team
  */
@@ -229,9 +239,10 @@ public class SimpleCacheKey implements CacheKey
 		if( values == null || values.length == 0 )
 			return;
 		
-		add( values[0], sb );
-		for( int i = 1; i < values.length; ++i )
-			add( ':', values[i], sb );
+		add( ArrayIterator.create(values),
+				elem -> add(elem, sb),
+				elem -> add(':', elem, sb),
+				"", "", sb );
 		
 	}
 	
@@ -247,16 +258,25 @@ public class SimpleCacheKey implements CacheKey
 		if( value == null ) return;
 		
 		if( value instanceof Iterable )
-			addIterable( value, sb );
+			add( ((Iterable<?>) value).iterator(),
+					elem -> add(elem, sb),
+					elem -> add(',', elem, sb),
+					"[", "]", sb );
+		
+		else if( value.getClass().isArray() )
+			add( ArrayIterator.create(value),
+					elem -> add(elem, sb),
+					elem -> add(',', elem, sb),
+					"[", "]", sb );
 		
 		else if( value instanceof Map )
-			addMap( value, sb );
+			add( ((Map<?,?>) value).entrySet().iterator(),
+					elem -> add(elem, sb),
+					elem -> add(',', elem, sb),
+					"{", "}", sb );
 		
 		else if( value instanceof Map.Entry )
 			addMapEntry( value, sb );
-		
-		else if( value.getClass().isArray() )
-			addArray( value, sb );
 		
 		else
 			sb.append( value );
@@ -289,60 +309,33 @@ public class SimpleCacheKey implements CacheKey
 	}
 	
 	/**
-	 * Adds the given iterable object to the {@link StringBuilder}.
+	 * Adds the elements in the given iterator to the {@link StringBuilder}.
 	 * 
-	 * @param values    the iterable object to add.
-	 * @param sb        {@link StringBuilder} to update.
+	 * @param values the iterator containing the elements add.
+	 * @param first  logic to apply to the first element.
+	 * @param others logic to apply to the other elements.
+	 * @param prefix string to ad before all elements.
+	 * @param suffix string to ad after all elements. 
+	 * @param sb     {@link StringBuilder} to update.
 	 */
-	private void addIterable( Object values, StringBuilder sb )
+	private void add( Iterator<?> values, Consumer<Object> first, Consumer<Object> others,
+			          String prefix, String suffix, StringBuilder sb )
 	{
 		
-		sb.append( '[' );
+		sb.append( prefix );
 				
-		final Iterator<?> iter = ((Iterable<?>)values).iterator();
-		if( iter.hasNext() )
+		if( values.hasNext() )
 		{
 		
-			add( iter.next(), sb );
-			while( iter.hasNext() )
-				add( ',', iter.next(), sb );
+			first.accept( values.next() );
+			while( values.hasNext() )
+				others.accept( values.next() );
 			
 		}
 		
-		sb.append( ']' );
+		sb.append( suffix );
 		
 	}
-	
-	/**
-	 * Adds the given map to the {@link StringBuilder}.
-	 * 
-	 * @param values    the map to add.
-	 * @param sb        {@link StringBuilder} to update.
-	 */
-	private void addMap( Object values, StringBuilder sb )
-	{
-		
-		sb.append( '{' );
-		
-		final Map<?,?> map = (Map<?,?>) values;
-		if( ! map.isEmpty() )
-		{
-		
-			final Iterator<?> iter = map.entrySet().iterator();
-			if( iter.hasNext() )
-			{
-		
-				add( iter.next(), sb );
-				while( iter.hasNext() )
-					add( ',', iter.next(), sb );
-					
-			}
-		}
-		
-		sb.append( '}' );
-		
-	}
-	
 	
 	/**
 	 * Adds the given map entry to the {@link StringBuilder}.
@@ -360,29 +353,7 @@ public class SimpleCacheKey implements CacheKey
 		add( entry.getValue(), sb );
 		
 	}
-	
-	
-	/**
-	 * Adds the given array to the {@link StringBuilder}.
-	 * 
-	 * @param values    the array to add.
-	 * @param sb        {@link StringBuilder} to update.
-	 */
-	private void addArray( Object values, StringBuilder sb )
-	{
 		
-		sb.append( '[' );
-		
-		CommandIterator.apply( value -> add( ',', value, sb ), values );
-		
-		final int l = sb.length() - 1;
-		if( sb.charAt(l) == ',' )
-			sb.setLength( l );
-		
-		sb.append( ']' );
-		
-	}
-	
 	/**
 	 * Adds after the properties the name of the
 	 * class and the version of the related data model.
